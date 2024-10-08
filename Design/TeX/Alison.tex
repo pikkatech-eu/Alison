@@ -1,0 +1,181 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{xspace}
+\usepackage{dirtree}
+\usepackage{url}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[toc,page]{appendix}
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+\usepackage[left=2.30cm, right=1.50cm, top=2.00cm, bottom=1.80cm]{geometry}
+\usepackage[scaled]{uarial}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+
+
+% USAGE DIRTREE
+%==============
+%\dirtree{%
+%	.1 Root.
+%	.2 Level 2 \DTcomment{Level 2 comment}.
+%	.3 Level 3 \DTcomment{Level 3 comment}.
+%}
+
+% USAGE TABULARX
+%================
+%\begin{tabularx}{0.95\textwidth}{|l|X|}
+%	\hline
+%	Header 1	& Header 2		\\
+%	\hline
+%	Line 1 Left	& Line 1 Right 	\\
+%	Line 2 Left	& Line 2 Right 	\\
+%	\hline
+%\end{tabularx}
+
+%USAGE ITEMIZE WITH ITEMSEP
+%==========================
+%\begin{itemize}\itemsep-4pt
+%\item First Item
+%\item Second Item
+%\item ...
+%\item Last Item
+%\end{itemize}
+
+% USAGE APPENDICES
+%=================
+%\appendices
+%\section{Important Equations}
+
+% MATRICES
+%=========
+% matrix		no borders
+% pmatrix		()
+% bmatrix		[]
+% vmatrix		||
+% Vmatrix		|| ||
+% BMatrix		{}
+
+% ALIGNMENT
+% =========
+% \begin{equation}\label{key}
+% 	\begin{aligned}
+% 		a   &= x_{ij} \\
+% 		b_j &= y_j 
+% 	\end{aligned}
+% \end{equation}
+
+% AUTO COUNTER (the prefix here being "Requirement")
+%===================================================
+% \newcounter{ReqCounter}
+% \newcommand{\req}{\protect\stepcounter{ReqCounter}\textbf{Requirement} \textbf{\theReqCounter.}}
+
+\author{Stanislav Koncebovski}
+\title{Project Alison}
+\date{2024-10-08}
+
+\begin{document}
+	\maketitle
+	
+	\section{Motivation}
+	Working on a genealogy software project we have found out that it would be highly desirable to support different string manipulation routines, such as Soundex, Daitch-Mokotoff Soundex, and a number of others, as well as a number of usual string metrics, such as Levenshtein and similar. \\
+	For Python, there exists a brilliant framework called \textbf{abydos} \cite{chrislitabydos}; for C\#, we failed to find a similar library, therefore we have decided to develop it ourselves, at least, partially.
+	
+	\section{Abydos functionality}
+	Below listed are the main routines supported by the \textbf{abydos} framework. Routines that we mean to implement first are rendered red.
+	
+	\subsection{Phonetic algorithms}
+	\begin{itemize}\itemsep-4pt
+		\item {\color{red} Robert C. Russell's Index} (\cite{Russell:1917})
+		\item {\color{red} American Soundex} (\cite{US:2007}, \cite{Knuth:1998})
+		\item Refined Soundex
+		\item {\color{red} Daitch-Mokotoff Soundex} (\cite{Mokotoff:1997})
+		\item {\color{red} Kölner Phonetik} (\cite{Postel:1969})
+		\item NYSIIS
+		\item Match Rating Algorithm
+		\item {\color{red} Metaphone} (\cite{Philips:1990}, \cite{Philips:1990b}, \cite{Kuhn:1995})
+		\item {\color{red} Double Metaphone} (\cite{Philips:2000})
+		\item Caverphone
+		\item Alpha Search Inquiry System
+		\item {\color{red} Fuzzy Soundex} \cite{Holmes:2002}
+		\item Phonex
+		\item Phonem
+		\item {\color{red} Phonix} (\cite{Pfeifer:2000}, \cite{Christen:2011}, \cite{Kollar:2007})
+		\item SfinxBis
+		\item phonet
+		\item Standardized Phonetic Frequency Code
+		\item Statistics Canada
+		\item Lein
+		\item Roger Root
+		\item Oxford Name Compression Algorithm (ONCA)
+		\item Eudex phonetic hash
+		\item Haase Phonetik
+		\item Reth-Schek Phonetik
+		\item FONEM
+		\item Parmar-Kumbharana
+		\item Davidson's Consonant Code
+		\item SoundD
+		\item PSHP Soundex/Viewex Coding
+		\item an early version of Henry Code
+		\item Norphone
+		\item Dolby Code
+		\item Phonetic Spanish
+		\item Spanish Metaphone
+		\item MetaSoundex
+		\item SoundexBR
+		\item NRL English-to-phoneme
+		\item Beider-Morse Phonetic Matching
+	\end{itemize}
+	
+	\subsubsection{String distance metrics}
+	\begin{itemize}\itemsep-4pt
+		\item String distance metrics
+		\item {\color{red} Levenshtein distance}  (\cite{Levenshtein:1965}, \cite{Levenshtein:1966})
+		\item Optimal String Alignment distance
+		\item {\color{red} Levenshtein-Damerau distance} (\cite{Damerau:1964})
+		\item Hamming distance
+		\item Tversky index
+		\item Sørensen–Dice coefficient \& distance
+		\item {\color{red} Jaccard similarity coefficient \& distance} (\cite{Jaccard:1901}, \cite{Tanimoto:1958}, \cite{Tversky:1977})
+		\item overlap similarity \& distance
+		\item Tanimoto coefficient \& distance
+		\item Minkowski distance \& similarity
+		\item Manhattan distance \& similarity
+		\item Euclidean distance \& similarity
+		\item Chebyshev distance
+		\item {\color{red} cosine similarity \& distance} (\cite{Otsuka:1936}, \cite{Ochiai:1957})
+		\item {\color{red} Jaro distance} (\cite{Jaro:1989}, \cite{Winkler:1990})
+		\item {\color{red} Jaro-Winkler distance (incl. the strcmp95 algorithm variant)}
+		\item Longest common substring
+		\item Ratcliff-Obershelp similarity \& distance
+		\item Match Rating Algorithm similarity
+		\item Normalized Compression Distance (NCD) \& similarity
+		\item Monge-Elkan similarity \& distance
+		\item Matrix similarity
+		\item Needleman-Wunsch score
+		\item Smith-Waterman score
+		\item Gotoh score
+		\item Length similarity
+		\item Prefix, Suffix, and Identity similarity \& distance
+		\item Modified Language-Independent Product Name Search (MLIPNS) similarity \& distance
+		\item Bag distance
+		\item Editex distance
+		\item Eudex distances
+		\item Sift4 distance
+		\item Baystat distance \& similarity
+		\item Typo distance
+		\item Indel distance
+		\item Synoname
+	\end{itemize}	
+
+	
+	\bibliographystyle{ieeetr}
+	\bibliography{Alison}
+\end{document}	
