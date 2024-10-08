@@ -1,31 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/***********************************************************************************
+* File:         AmericanSoundex.cs                                                 *
+* Contents:     Class AmericanSoundex                                              *
+* Author:       Stanislav "Bav" Koncebovski (stanislav@pikkatech.eu)               *
+* Date:         2024-10-08 21:25                                                   *
+* Version:      1.0                                                                *
+* Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
+***********************************************************************************/
+
 using System.Text;
-using System.Threading.Tasks;
+using Alison.Library.Enumerations;
 
 namespace Alison.Library.Encoders
 {
-	public static class KnuthSoundex
+	/// <summary>
+	/// American Soundex, as described in Knuth TAOCP Vol3 Edition 2, pg 394-395.
+	/// Follows https://github.com/rbirkby/soundex/ , with slight modifications.
+	/// </summary>
+	public static class AmericanSoundex
 	{
-		public static string Encode(string s)
+		#region Static Properties
+        /// <summary>
+        /// Default length of the Soundex code (=4).
+        /// </summary>
+		public static int CodeLength {get;set;} = 4;
+
+        /// <summary>
+        /// Completion mode.
+        /// Default: pad with zeros.
+        /// </summary>
+        public static SoundexCompletionMode SoundexCompletionMode   {get;set;} = SoundexCompletionMode.PadWithZeroes;
+		#endregion
+
+		#region Public Features
+		public static string Encode(string word)
 		{
-			if (s.Length == 0)
+			if (word.Length == 0)
             {
                 return string.Empty;
             }
 
-            var output = new StringBuilder();
+            StringBuilder output = new StringBuilder();
 
-            output.Append(char.ToUpperInvariant(s[0]));
+            output.Append(char.ToUpperInvariant(word[0]));
 
             // Stop at a maximum of 4 characters
-            for (int i = 1; i < s.Length && output.Length < 4; i++)
+            for (int i = 1; i < word.Length && output.Length < CodeLength; i++)
             {
-                string c = EncodeChar(s[i]);
+                string c = EncodeChar(word[i]);
 
                 // We either append or ignore, determined by the preceding char
-                switch (char.ToLowerInvariant(s[i - 1]))
+                switch (char.ToLowerInvariant(word[i - 1]))
                 {
                     case 'a':
                     case 'e':
@@ -35,6 +59,7 @@ namespace Alison.Library.Encoders
                         // Chars separated by a vowel - OK to encode
                         output.Append(c);
                         break;
+
                     case 'h':
                     case 'w':
                     default:
@@ -45,12 +70,16 @@ namespace Alison.Library.Encoders
                             // encoded. However, we need to check whether it is
                             // the same phonetically as the next char
                             if (EncodeChar(output[output.Length - 1]) != c)
+                            {
                                 output.Append(c);
+                            }
                         }
                         else
                         {
                             if (output[output.Length - 1].ToString() != c)
+                            {
                                 output.Append(c);
+                            }
                         }
 
                         break;
@@ -58,12 +87,17 @@ namespace Alison.Library.Encoders
             }
 
             // Pad with zeros
-            output.Append(new string('0', 4 - output.Length));
+            if (SoundexCompletionMode == SoundexCompletionMode.PadWithZeroes)
+            {
+                output.Append(new string('0', CodeLength - output.Length));
+            }
 
             return output.ToString();
 		}
+		#endregion
 
-        private static string EncodeChar(char c)
+		#region Private Auxiliary
+		private static string EncodeChar(char c)
         {
             // C# will re-order this list and produce a look-up list from it
             // C# will do all the work we would otherwise do by building arrays of values
@@ -97,5 +131,6 @@ namespace Alison.Library.Encoders
                     return string.Empty;
             }
         }
+        #endregion
 	}
 }
