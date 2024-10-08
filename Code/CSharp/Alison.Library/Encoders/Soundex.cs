@@ -8,6 +8,7 @@
 ***********************************************************************************/
 
 using System.Collections.Generic;
+using Alison.Library.Enumerations;
 
 namespace Alison.Library.Encoders
 {
@@ -35,24 +36,6 @@ namespace Alison.Library.Encoders
 */
 	public static class Soundex
 	{
-		#region Public Enums
-		/// <summary>
-		/// Defines the mode in which names will be reduced (stripped of vowels) if the result is too short
-		/// </summary>
-		public enum SoundexCompletionMode
-		{
-			/// <summary>
-			/// Reduced name is left as is if too short
-			/// </summary>
-			AdmitShort		= 0,
-
-			/// <summary>
-			/// Reduced name will be padded with zeroes
-			/// </summary>
-			PadWithZeroes	= 1
-		}
-		#endregion
-
 		#region Private constant members
 		private static  Dictionary<char, char> SUBSTITUTIONS = new Dictionary<char, char>()
 		{
@@ -81,7 +64,7 @@ namespace Alison.Library.Encoders
 		/// <summary>
 		/// Private completion mode
 		/// </summary>
-		private static SoundexCompletionMode CompletionMode {get;set;}
+		public static SoundexCompletionMode SoundexCompletionMode {get;set;} = SoundexCompletionMode.PadWithZeroes;
 		#endregion
 
 		#region Public Functionality
@@ -100,23 +83,23 @@ namespace Alison.Library.Encoders
 				return "";
 			}
 
-			string strResult = source.Substring(0, 1).ToUpper();
+			string result = source.Substring(0, 1).ToUpper();
 
-			string strTemp = source.Substring(1, source.Length - 1);
+			string temp = source.Substring(1, source.Length - 1);
 
-			strTemp = strTemp.ToLower();
+			temp = temp.ToLower();
 
-			for (int i = 0; i < strTemp.Length; i ++)
+			for (int i = 0; i < temp.Length; i ++)
 			{
 				try
 				{
-					char ch = SUBSTITUTIONS[strTemp[i]];
+					char ch = SUBSTITUTIONS[temp[i]];
 
-					if (strResult.Length < length)
+					if (result.Length < length)
 					{
-						if (ch != strResult[strResult.Length - 1])
+						if (ch != result[result.Length - 1])
 						{
-							strResult += ch;
+							result += ch;
 						}
 					}
 					else
@@ -127,20 +110,20 @@ namespace Alison.Library.Encoders
 				catch (KeyNotFoundException) {}
 			}
 
-			if (strResult.Length < length)
+			if (result.Length < length)
 			{
-				switch (CompletionMode)
+				switch (SoundexCompletionMode)
 				{
 					case SoundexCompletionMode.AdmitShort:
 						break;
 
 					case SoundexCompletionMode.PadWithZeroes:
-						strResult = strResult.PadRight(length, '0');
+						result = result.PadRight(length, '0');
 						break;
 				}
 			}
 
-			return strResult;
+			return result;
 		}
 		#endregion
 
