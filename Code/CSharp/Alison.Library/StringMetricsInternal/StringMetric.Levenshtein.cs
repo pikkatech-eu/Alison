@@ -109,14 +109,14 @@ namespace Alison.Library.StringMetricsInternal
 		}
 		#endregion
 
-		#region Internal Searching
+		#region Private Searching
 		/// <summary>
 		/// Finds the element in a string list having the minimal Levenshtein distance from the token.
 		/// </summary>
 		/// <param name="items">The list of strings.</param>
 		/// <param name="token">The token string.</param>
 		/// <returns>The index of the list item Levenshtein-nearest to the token.</returns>
-		internal static int NextElement(List<string> items, string token)
+		private static int NextElement(List<string> items, string token)
 		{
 			int index = -1;
 			int distance = Int32.MaxValue;
@@ -136,8 +136,8 @@ namespace Alison.Library.StringMetricsInternal
 		}
 		#endregion
 
-		#region Internal Sorting
-		internal static List<string> SortStringsByDistanceFromToken(List<string> items, string token)
+		#region Private Sorting
+		private static List<string> SortStringsByDistanceFromToken(List<string> items, string token)
 		{
 			Comparer comparer = new Comparer(token);
 			items.Sort(comparer);
@@ -145,7 +145,7 @@ namespace Alison.Library.StringMetricsInternal
 			return items;
 		}
 
-		internal static List<int> SortByDistanceFromToken(List<string> items, string token)
+		private static List<int> SortByDistanceFromToken(List<string> items, string token)
 		{
 			List<string> temp = new List<string>(items);
 

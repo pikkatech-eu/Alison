@@ -15,7 +15,7 @@ namespace Alison.Library.StringMetricsInternal
 	internal static class Cosine
 	{
 		#region Internal classes
-		public class Comparer: IComparer<string>
+		internal class Comparer: IComparer<string>
 		{
 			private string _token = "";
 			private int _q = 1;
@@ -54,9 +54,9 @@ namespace Alison.Library.StringMetricsInternal
 		/// </summary>
 		/// <param name="word1">The first word.</param>
 		/// <param name="word2">The second word.</param>
-		/// <param name="q">The number of elements in the N-Gram.</param>
+		/// <param name="NGramLength">The length of the NGram used to vectorize the words.</param>
 		/// <returns>The cosine similarity between the words.</returns>
-		internal static double Similarity(string word1, string word2, int q = 1)
+		internal static double Similarity(string word1, string word2, int NGramLength = 1)
 		{
 			if (word1 == null && word2 == null)
 			{
@@ -73,15 +73,15 @@ namespace Alison.Library.StringMetricsInternal
 				return 0.0;
 			}
 
-			Dictionary<string, int> v1 = Vectorizer.NGraphVectorize(word1, q);
-			Dictionary<string, int> v2 = Vectorizer.NGraphVectorize(word2, q);
+			Dictionary<string, int> v1 = Vectorizer.Vectorize(word1, NGramLength);
+			Dictionary<string, int> v2 = Vectorizer.Vectorize(word2, NGramLength);
 
 			double norm1 = v1.Sum(kvp => kvp.Value * kvp.Value);
 			double norm2 = v2.Sum(kvp => kvp.Value * kvp.Value);
 			norm1 = Math.Sqrt(norm1);
 			norm2 = Math.Sqrt(norm2);
 
-			var intersection = v1.Keys.Intersect(v2.Keys);
+			IEnumerable<string> intersection = v1.Keys.Intersect(v2.Keys);
 
 			double sum = 0;
 
@@ -94,20 +94,20 @@ namespace Alison.Library.StringMetricsInternal
 		}
 
 		/// <summary>
-		/// Finds the element in a string list having the maximum Cosine similarity to the token.
+		/// Finds the index of the element in a string list having the maximum Cosine similarity to the token.
 		/// </summary>
 		/// <param name="items">The list of strings.</param>
 		/// <param name="token">The token string.</param>
-		/// <param name="q">The number of elements in the N-Gram.</param>
+		/// <param name="NGramLength">The length of the NGram used to vectorize the words (default: 1).</param>
 		/// <returns>The index of the list item Cosine-nearest to the token.</returns>
-		internal static int NextElement(List<string> items, string token, int q = 1)
+		public static int IndexOfMostSimilar(List<string> items, string token, int NGramLength = 1)
 		{
 			int index = -1;
 			double similarity = Double.MinValue;
 
 			for (int i = 0; i < items.Count; i++)
 			{
-				double sim = Similarity(items[i], token, q);
+				double sim = Similarity(items[i], token, NGramLength);
 
 				if (sim > similarity)
 				{
@@ -119,29 +119,19 @@ namespace Alison.Library.StringMetricsInternal
 			return index;
 		}
 
-		internal static List<string> SortStringsByDistanceFromToken(List<string> items, string token, int q = 1)
+		/// <summary>
+		/// Sorts a list of strings in the order of cosine similarity to a token string.
+		/// </summary>
+		/// <param name="items">The list of strings to sort.</param>
+		/// <param name="token">The token to compute distances to.</param>
+		/// <param name="NGramLength">The length of the NGram used to vectorize the words (default: 1).</param>
+		/// <returns>The list sorted in the similarity order.</returns>
+		public static List<string> SortStringsByDistanceFromToken(List<string> items, string token, int NGramLength = 1)
 		{
-			Comparer comparer = new Comparer(token, q);
+			Comparer comparer = new Comparer(token, NGramLength);
 			items.Sort(comparer);
 
 			return items;
-		}
-
-		internal static List<int> SortByDistanceFromToken(List<string> items, string token, int q)
-		{
-			List<string> temp = new List<string>(items);
-
-			List<int> result = new List<int>();
-
-			List<string> sorted = SortStringsByDistanceFromToken(items, token, q);
-
-			foreach (string s in sorted)
-			{
-				int index = temp.IndexOf(s);
-				result.Add(index);
-			}
-
-			return result;
 		}
 	}
 }

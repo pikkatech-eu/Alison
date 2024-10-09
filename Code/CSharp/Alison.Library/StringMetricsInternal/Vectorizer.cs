@@ -13,25 +13,25 @@ namespace Alison.Library.StringMetricsInternal
 	public static class Vectorizer
 	{
 		/// <summary>
-		/// Calculates a vector representation of a word.
+		/// Calculates a vector representation of a word using its representation as a sequence of N-Grams.
 		/// </summary>
 		/// <param name="word">The word to vectorize.</param>
-		/// <param name="q">Length of the NGram.</param>
+		/// <param name="NGramLength">Length of the NGram (default: 2).</param>
 		/// <returns>Dictionary with the characters of the word as the keys, and frequencies of the characters as the values.</returns>
-		internal static Dictionary<string, int> NGraphVectorize(string word, int q = 2)
+		internal static Dictionary<string, int> Vectorize(string word, int NGramLength = 2)
 		{
 			Dictionary<string, int> result = new Dictionary<string, int>();
 
-			if (word.Length >= q)
+			if (word.Length >= NGramLength)
 			{
 				for (int position = 0; position < word.Length; position++)
 				{
-					if (position + q > word.Length)
+					if (position + NGramLength > word.Length)
 					{
 						break;
 					}
 
-					string chunk = word.Substring(position, q);
+					string chunk = word.Substring(position, NGramLength);
 
 					if (!result.ContainsKey(chunk))
 					{
