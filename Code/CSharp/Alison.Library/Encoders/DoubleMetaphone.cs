@@ -7,7 +7,7 @@
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
 
-using Alison.Library.Encoders.DoubleMetaphoneInternal;
+using DMI = Alison.Library.Encoders.DoubleMetaphoneInternal;
 
 namespace Alison.Library.Encoders
 {
@@ -20,7 +20,7 @@ namespace Alison.Library.Encoders
 		/// <returns>The encoded word.</returns>
 		public static string Encode(string word)
 		{
-			DoubleMetaphonePhonix dm = new DoubleMetaphonePhonix();
+            DMI.DoubleMetaphoneInternal dm = new DMI.DoubleMetaphoneInternal();
 			dm.BuildKeys(word);
 
 			if (dm.PrimaryCode == dm.SecondaryCode || dm.SecondaryCode == null)
