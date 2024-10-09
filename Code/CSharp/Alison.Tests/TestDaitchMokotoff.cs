@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/***********************************************************************************
+* File:         TestDaitchMokotoff.cs                                              *
+* Contents:     Class TestDaitchMokotoff                                           *
+* Author:       Stanislav "Bav" Koncebovski (stanislav@pikkatech.eu)               *
+* Date:         2024-10-09 12:47                                                   *
+* Version:      1.0                                                                *
+* Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
+***********************************************************************************/
+
 using Alison.Library.Encoders;
 using NUnit.Framework;
 

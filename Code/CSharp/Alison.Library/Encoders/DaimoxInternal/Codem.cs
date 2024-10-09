@@ -164,9 +164,14 @@ namespace Alison.Library.Encoders.DaimoxIntern
 			return result;
 		}
 
+		/// <summary>
+		/// Removes possible duplicates in output lists.
+		/// </summary>
+		/// <param name="codem">Codem to remove duplicates in.</param>
+		/// <returns>Codem simplified.</returns>
 		public static Codem RemoveDuplicates(Codem codem)
 		{
-			var hashSet = new HashSet<string>(codem);
+			HashSet<string> hashSet = new HashSet<string>(codem);
 			return new Codem(hashSet.ToList());
 		}
 		#endregion
