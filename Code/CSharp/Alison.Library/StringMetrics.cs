@@ -20,7 +20,6 @@ namespace Alison.Library
 		/// <param name="source"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		/// <exception cref="NotImplementedException"></exception>
 		public static int LevenshteinDistance(string source, string target)
 		{
 			return Levenshtein.Distance(source, target);

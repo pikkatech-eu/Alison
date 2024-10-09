@@ -1,11 +1,12 @@
 ﻿/***********************************************************************************
-* File:         PhoneticDevice.Helpers.cs                                          *
-* Contents:     Class PhoneticDevice                                               *
-* Author:       Stanislav Koncebovski (stanislav@pikkatech.eu)                     *
-* Date:         2023-10-29 1911                                                    *
+* File:         StringMetric.Levenshtein.cs                                        *
+* Contents:     Class Levenshtein                                                  *
+* Author:       Stanislav "Bav" Koncebovski (stanislav@pikkatech.eu)               *
+* Date:         2024-10-09 12:50                                                   *
 * Version:      1.0                                                                *
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
+
 using System;
 using System.Collections.Generic;
 
@@ -108,7 +109,7 @@ namespace Alison.Library.StringMetricsInternal
 		}
 		#endregion
 
-		#region Searching
+		#region Internal Searching
 		/// <summary>
 		/// Finds the element in a string list having the minimal Levenshtein distance from the token.
 		/// </summary>
@@ -135,7 +136,7 @@ namespace Alison.Library.StringMetricsInternal
 		}
 		#endregion
 
-		#region Sorting
+		#region Internal Sorting
 		internal static List<string> SortStringsByDistanceFromToken(List<string> items, string token)
 		{
 			Comparer comparer = new Comparer(token);
