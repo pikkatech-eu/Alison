@@ -7,28 +7,38 @@
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
 
-using System.Text;
 using Alison.Library.Enumerations;
 
 namespace Alison.Library.Encoders
 {
 	/// <summary>
 	/// American Soundex, as described in Knuth TAOCP Vol3 Edition 2, pg 394-395.
-	/// Follows https://github.com/rbirkby/soundex/ , with slight modifications.
+	/// Follows Richard Birkby's algorithm (https://github.com/rbirkby/soundex/), with slight modifications.
 	/// </summary>
 	public static class AmericanSoundex
 	{
-		#region Static Properties
+        #region Static constants
+        private static readonly string[] SURNAME_PREFIXES = {"VAN", "CON", "DE", "DI", "LA", "LE"};
+        #endregion
+
+        #region Static Properties
         /// <summary>
         /// Default length of the Soundex code (=4).
         /// </summary>
-		public static int CodeLength {get;set;} = 4;
+        public static int CodeLength {get;set;} = 4;
 
         /// <summary>
         /// Completion mode.
         /// Default: pad with zeros.
         /// </summary>
         public static SoundexCompletionMode SoundexCompletionMode   {get;set;} = SoundexCompletionMode.PadWithZeroes;
+
+        /// <summary>
+        /// If set to true, the following prefixes will be removed at the beginning of the word: "Van", "Con", "De", "Di", "La", "Le".
+        /// Defined by: United States. Soundex system: the soundex indexing system. 2007. URL: https://www.archives.gov/research/census/soundex.html.
+        /// </summary>
+        /// <example>"VanDeusen" will be encoded as "D250" instead of "V532".</example>
+        public static bool RemoveSurnamePrefixes    {get;set;} = false;
 		#endregion
 
 		#region Public Features
@@ -39,9 +49,21 @@ namespace Alison.Library.Encoders
                 return string.Empty;
             }
 
-            StringBuilder output = new StringBuilder();
+            word = word.ToAscii();
 
-            output.Append(char.ToUpperInvariant(word[0]));
+            if (RemoveSurnamePrefixes)
+            {
+                for (int i = 0; i < SURNAME_PREFIXES.Length; i++)
+                {
+                    if (word.ToUpper().StartsWith(SURNAME_PREFIXES[i]))
+                    {
+                        word = word.Substring(SURNAME_PREFIXES[i].Length);
+                        break;
+                    }
+                }
+            }
+
+            string output = new string(char.ToUpperInvariant(word[0]), 1);
 
             // Stop at a maximum of 4 characters
             for (int i = 1; i < word.Length && output.Length < CodeLength; i++)
@@ -57,7 +79,7 @@ namespace Alison.Library.Encoders
                     case 'o':
                     case 'u':
                         // Chars separated by a vowel - OK to encode
-                        output.Append(c);
+                        output += c;
                         break;
 
                     case 'h':
@@ -71,14 +93,14 @@ namespace Alison.Library.Encoders
                             // the same phonetically as the next char
                             if (EncodeChar(output[output.Length - 1]) != c)
                             {
-                                output.Append(c);
+                                output += c;
                             }
                         }
                         else
                         {
                             if (output[output.Length - 1].ToString() != c)
                             {
-                                output.Append(c);
+                                output += c;
                             }
                         }
 
@@ -89,7 +111,7 @@ namespace Alison.Library.Encoders
             // Pad with zeros
             if (SoundexCompletionMode == SoundexCompletionMode.PadWithZeroes)
             {
-                output.Append(new string('0', CodeLength - output.Length));
+                output += new string('0', CodeLength - output.Length);
             }
 
             return output.ToString();
@@ -108,6 +130,7 @@ namespace Alison.Library.Encoders
                 case 'p':
                 case 'v':
                     return "1";
+
                 case 'c':
                 case 'g':
                 case 'j':
@@ -117,16 +140,21 @@ namespace Alison.Library.Encoders
                 case 'x':
                 case 'z':
                     return "2";
+
                 case 'd':
                 case 't':
                     return "3";
+
                 case 'l':
                     return "4";
+
                 case 'm':
                 case 'n':
                     return "5";
+
                 case 'r':
                     return "6";
+
                 default:
                     return string.Empty;
             }

@@ -11,8 +11,17 @@ namespace Alison.Tests
 	{
 		static void Main(string[] args)
 		{
-			string[] words = {"Haas", "Christopher", "Niall", "Smith", "Schmidt"};
-			string[] results = {"1", "3813428", "715", "3614", "3614"};
+			// TestRusselIndex();
+
+			AmericanSoundex.RemoveSurnamePrefixes = true;
+			string word = "VanDeusen";
+			string encoded = AmericanSoundex.Encode(word);
+		}
+
+		private static void TestRusselIndex()
+		{
+			string[] words = { "Haas", "Christopher", "Niall", "Smith", "Schmidt" };
+			string[] results = { "1", "3813428", "715", "3614", "3614" };
 
 			for (int i = 0; i < words.Length; i++)
 			{
