@@ -14,7 +14,7 @@ namespace Alison.Tests
 			// TestRusselIndex();
 
 			AmericanSoundex.RemoveSurnamePrefixes = true;
-			string word = "VanDeusen";
+			string word = "Van Deusen";
 			string encoded = AmericanSoundex.Encode(word);
 		}
 

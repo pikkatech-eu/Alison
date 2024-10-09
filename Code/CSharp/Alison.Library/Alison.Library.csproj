@@ -55,7 +55,6 @@
     <Compile Include="StringMetricsInternal\StringMetric.Cosine.cs" />
     <Compile Include="StringMetricsInternal\StringMetric.Levenshtein.cs" />
     <Compile Include="StringMetricsInternal\Vectorizer.cs" />
-    <Compile Include="StringNormalizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

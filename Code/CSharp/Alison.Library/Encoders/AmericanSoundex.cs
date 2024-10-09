@@ -49,8 +49,13 @@ namespace Alison.Library.Encoders
                 return string.Empty;
             }
 
+            // Remove spaces.
+            word = word.Replace(" ", "");
+
+            // Convert non-Ascii characters.
             word = word.ToAscii();
 
+            // If RemoveSurnamePrefixes is set, remove surname prefixes.
             if (RemoveSurnamePrefixes)
             {
                 for (int i = 0; i < SURNAME_PREFIXES.Length; i++)
@@ -65,7 +70,7 @@ namespace Alison.Library.Encoders
 
             string output = new string(char.ToUpperInvariant(word[0]), 1);
 
-            // Stop at a maximum of 4 characters
+            // Stop at a maximum of CodeLength characters
             for (int i = 1; i < word.Length && output.Length < CodeLength; i++)
             {
                 string c = EncodeChar(word[i]);

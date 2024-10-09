@@ -69,7 +69,7 @@ namespace Alison.Library.Encoders
         /// <returns>The Russell Index value.</returns>
 		public static string Encode(string word)
         {
-            word = StringNormalizer.ToAscii(word).ToUpper().Trim();
+            word = word.ToAscii().ToUpper().Trim();
             word = word.Replace("GH", "");
 
             word = word.TrimEnd('S').TrimEnd('Z');
