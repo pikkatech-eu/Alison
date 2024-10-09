@@ -165,8 +165,13 @@ namespace Alison.Library.Encoders
 		};
 		#endregion
 		
-		public static int[] Encode(string word)
+		public static string Encode(string word)
 		{
+			if (String.IsNullOrEmpty(word))
+			{
+				return "000000";
+			}
+
 			// 1. Working copy of the word, normalized, put into upper case and remove all punctuation and possible whitespaces (R7).
 			string work = word.ToAscii();
 			work = work.ToUpper();
@@ -235,7 +240,9 @@ namespace Alison.Library.Encoders
 				}
 			}
 
-			return codem.ToIntegerArray();
+			codem = Codem.RemoveDuplicates(codem);
+
+			return codem.ToString();
 		}
 
 		#region Private auxiliary

@@ -56,8 +56,6 @@ namespace Alison.Tests
 				("Jackson-Jackson", "J252"),
 			};
 
-			// Soundex.SoundexCompletionMode = SoundexCompletionMode.PadWithZeroes;
-
 			for (int i = 0; i < data.Length; i++)
 			{
 				string word = data[i].Word;

@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Alison.Library.Encoders.DaimoxIntern
 {
@@ -162,6 +163,12 @@ namespace Alison.Library.Encoders.DaimoxIntern
 
 			return result;
 		}
+
+		public static Codem RemoveDuplicates(Codem codem)
+		{
+			var hashSet = new HashSet<string>(codem);
+			return new Codem(hashSet.ToList());
+		}
 		#endregion
 
 		#region String representation
@@ -171,18 +178,8 @@ namespace Alison.Library.Encoders.DaimoxIntern
 		/// <returns></returns>
 		public override string ToString()
 		{
-			string result = "[";
-
-			for (int i = 0; i < this.Count; i++)
-			{
-				result += $"{this[i]}, ";
-			}
-
-			result = result.Substring(0, result.Length - 2);
-
-			result += "]";
-
-			return result;
+			this.Sort();
+			return String.Join(",", this);
 		}
 		#endregion
 
