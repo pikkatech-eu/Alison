@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
 {

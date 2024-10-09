@@ -1,6 +1,6 @@
 ﻿/***********************************************************************************
-* File:         Vectorizer.cs                                                      *
-* Contents:     Class Vectorizer                                                   *
+* File:         NGramVectorizer.cs                                                 *
+* Contents:     Class NGramVectorizer                                              *
 * Author:       Stanislav Koncebovski (stanislav@pikkatech.eu)                     *
 * Date:         2023-11-14 1828                                                    *
 * Version:      1.0                                                                *
@@ -8,9 +8,9 @@
 ***********************************************************************************/
 using System.Collections.Generic;
 
-namespace Alison.Library.StringMetricsInternal
+namespace Alison.Library.Vectorizers
 {
-	public static class Vectorizer
+	public static class NGramVectorizer
 	{
 		/// <summary>
 		/// Calculates a vector representation of a word using its representation as a sequence of N-Grams.

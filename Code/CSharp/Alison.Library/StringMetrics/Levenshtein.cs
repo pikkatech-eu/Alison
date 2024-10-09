@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Alison.Library.StringMetricsInternal
+namespace Alison.Library.StringMetrics
 {
-	internal static class Levenshtein
+	public static class Levenshtein
 	{
 		#region Internal classes
 		public class Comparer: IComparer<string>
@@ -57,7 +57,7 @@ namespace Alison.Library.StringMetricsInternal
 		///		Int32.MaxValue if one of the arguments is null and the other one not;
 		///		Levenshtein distance if both are not null.
 		/// </returns>
-		internal static int Distance(string source1, string source2)
+		public static int Distance(string source1, string source2)
 		{
 			if (source1 == null && source2 == null)
 			{

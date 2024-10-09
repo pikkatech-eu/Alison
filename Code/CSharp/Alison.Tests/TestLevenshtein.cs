@@ -8,6 +8,7 @@
 ***********************************************************************************/
 
 using Alison.Library;
+using Alison.Library.StringMetrics;
 using NUnit.Framework;
 
 namespace Alison.Tests
@@ -54,7 +55,7 @@ namespace Alison.Tests
 			{
 				string word1 = data[i].Word1;
 				string word2 = data[i].Word2;
-				int distance = StringMetrics.LevenshteinDistance(word1, word2);
+				int distance = Levenshtein.Distance(word1, word2);
 
 				Assert.That(distance == data[i].ExpectedDistance);
 			}

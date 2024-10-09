@@ -8,6 +8,7 @@
 ***********************************************************************************/
 
 using Alison.Library.Enumerations;
+using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
 {

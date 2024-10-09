@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Alison.Library.DaimoxIntern;
 using Alison.Library.Encoders.DaimoxIntern;
+using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
 {

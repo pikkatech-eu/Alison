@@ -1,6 +1,6 @@
 ﻿/***********************************************************************************
-* File:         StringMetric.Cosine.cs                                             *
-* Contents:     Class Cosine                                                       *
+* File:         CosineSimilarity.cs                                                *
+* Contents:     Class CosineSimilarity                                             *
 * Author:       Stanislav Koncebovski (stanislav@pikkatech.eu)                     *
 * Date:         2023-11-14 1754                                                    *
 * Version:      1.0                                                                *
@@ -9,8 +9,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alison.Library.Vectorizers;
 
-namespace Alison.Library.StringMetricsInternal
+namespace Alison.Library.StringMetrics
 {
 	public static class Cosine
 	{
@@ -59,7 +60,7 @@ namespace Alison.Library.StringMetricsInternal
 		/// <param name="word2">The second word.</param>
 		/// <param name="NGramLength">The length of the NGram used to vectorize the words.</param>
 		/// <returns>The cosine similarity between the words.</returns>
-		internal static double Similarity(string word1, string word2, int NGramLength = 2)
+		public static double Similarity(string word1, string word2, int NGramLength = 2)
 		{
 			if (word1 == null && word2 == null)
 			{
@@ -82,8 +83,8 @@ namespace Alison.Library.StringMetricsInternal
 				word2 = word2.ToLower();
 			}
 
-			Dictionary<string, int> v1 = Vectorizer.Vectorize(word1, NGramLength);
-			Dictionary<string, int> v2 = Vectorizer.Vectorize(word2, NGramLength);
+			Dictionary<string, int> v1 = NGramVectorizer.Vectorize(word1, NGramLength);
+			Dictionary<string, int> v2 = NGramVectorizer.Vectorize(word2, NGramLength);
 
 			double norm1 = v1.Sum(kvp => kvp.Value * kvp.Value);
 			double norm2 = v2.Sum(kvp => kvp.Value * kvp.Value);

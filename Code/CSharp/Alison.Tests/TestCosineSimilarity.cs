@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alison.Library;
-using Alison.Library.StringMetricsInternal;
+using Alison.Library.StringMetrics;
 using NUnit.Framework;
 
 namespace Alison.Tests
@@ -18,7 +18,7 @@ namespace Alison.Tests
 			string word1 = "Nelson";
 			string word2 = "nelson";
 
-			double similarity = StringMetrics.CosineSimilarity(word1, word2);
+			double similarity = Cosine.Similarity(word1, word2);
 
 			Assert.That(Math.Abs(similarity - 1.0) <= 1e-4);
 		}
@@ -29,7 +29,7 @@ namespace Alison.Tests
 			string word1 = "Nelson";
 			string word2 = "";
 
-			double similarity = StringMetrics.CosineSimilarity(word1, word2);
+			double similarity = Cosine.Similarity(word1, word2);
 
 			Assert.That(Math.Abs(similarity) <= 1e-4);
 		}
@@ -40,7 +40,7 @@ namespace Alison.Tests
 			string word1 = "Nelson";
 			string word2 = "neilsen";
 
-			double similarity = StringMetrics.CosineSimilarity(word1, word2);
+			double similarity = Cosine.Similarity(word1, word2);
 
 			Assert.That(similarity >= 0.5);
 		}
@@ -51,7 +51,7 @@ namespace Alison.Tests
 			string word1 = "Nelson";
 			string word2 = "Schimpanse";
 
-			double similarity = StringMetrics.CosineSimilarity(word1, word2);
+			double similarity = Cosine.Similarity(word1, word2);
 
 			Assert.That(similarity < 0.1);
 		}
@@ -70,7 +70,7 @@ namespace Alison.Tests
 
 			var result = Cosine.MostSimilar(words.ToList(), token);
 
-			double similarity = StringMetrics.CosineSimilarity(token, result.Word);
+			double similarity = Cosine.Similarity(token, result.Word);
 
 			Console.WriteLine($"{result.Word}: {result.Index} ({similarity})");
 		}
