@@ -13,9 +13,8 @@ namespace Alison.Tests
 		{
 			// TestRusselIndex();
 
-			AmericanSoundex.RemoveSurnamePrefixes = true;
-			string word = "Van Deusen";
-			string encoded = AmericanSoundex.Encode(word);
+			string word = "katherine";
+			string result = DoubleMetaphone.Encode(word);
 		}
 
 		private static void TestRusselIndex()
