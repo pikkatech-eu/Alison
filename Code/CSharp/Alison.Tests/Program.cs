@@ -13,7 +13,7 @@ namespace Alison.Tests
 		{
 			// TestRusselIndex();
 
-			string word = "katherine";
+			string word = "cambrillo";
 			string result = DoubleMetaphone.Encode(word);
 		}
 

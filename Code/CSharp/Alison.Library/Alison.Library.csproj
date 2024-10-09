@@ -48,7 +48,7 @@
     <Compile Include="Encoders\DaimoxInternal\StringLengthComparer.cs" />
     <Compile Include="Encoders\AmericanSoundex.cs" />
     <Compile Include="Encoders\DoubleMetaphone.cs" />
-    <Compile Include="Encoders\DoubleMetaphoneInternal\DoubleMetaphoneInternal.cs" />
+    <Compile Include="Encoders\DoubleMetaphoneInternal\DoubleMetaphonePhonix.cs" />
     <Compile Include="Encoders\Russel.cs" />
     <Compile Include="Enumerations\SoundexCompletionMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

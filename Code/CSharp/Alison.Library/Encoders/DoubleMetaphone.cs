@@ -7,6 +7,8 @@
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
 
+using Alison.Library.Encoders.DoubleMetaphoneInternal;
+
 namespace Alison.Library.Encoders
 {
 	public static class DoubleMetaphone
@@ -18,15 +20,16 @@ namespace Alison.Library.Encoders
 		/// <returns>The encoded word.</returns>
 		public static string Encode(string word)
 		{
-			DoubleMetaphoneInternal dmi = new DoubleMetaphoneInternal(word);
+			DoubleMetaphonePhonix dm = new DoubleMetaphonePhonix();
+			dm.BuildKeys(word);
 
-			if (dmi.PrimaryKey == dmi.AlternateKey)
+			if (dm.PrimaryCode == dm.SecondaryCode || dm.SecondaryCode == null)
 			{
-				return dmi.PrimaryKey;
+				return dm.PrimaryCode;
 			}
 			else
 			{
-				return $"{dmi.PrimaryKey},{dmi.AlternateKey}";
+				return $"{dm.PrimaryCode},{dm.SecondaryCode}";
 			}
 		}
 	}
