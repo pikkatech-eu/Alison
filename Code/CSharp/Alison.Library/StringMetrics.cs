@@ -25,9 +25,9 @@ namespace Alison.Library
 			return Levenshtein.Distance(source, target);
 		}
 
-		public static double CosineSimilarity(string source, string target)
+		public static double CosineSimilarity(string source, string target, int NGramLength = 2)
 		{
-			return Cosine.Similarity(source, target);
+			return Cosine.Similarity(source, target, NGramLength);
 		}
 	}
 }

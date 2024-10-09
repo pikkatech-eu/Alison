@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCosineSimilarity.cs" />
     <Compile Include="TestDaitchMokotoff.cs" />
     <Compile Include="TestLevenshtein.cs" />
     <Compile Include="TestRussel.cs" />
