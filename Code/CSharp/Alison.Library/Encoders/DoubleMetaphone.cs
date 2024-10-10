@@ -7,12 +7,12 @@
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
 
-using DMI = Alison.Library.Encoders.DoubleMetaphoneInternal;
-
 namespace Alison.Library.Encoders
 {
 	public static class DoubleMetaphone
 	{
+		public static int MaxLength	{get;set;} = 4;
+
 		/// <summary>
 		/// Wraps the functionality of the implementation by Adam Nelson (anelson@nullpointer.net).
 		/// </summary>
@@ -20,16 +20,17 @@ namespace Alison.Library.Encoders
 		/// <returns>The encoded word.</returns>
 		public static string Encode(string word)
 		{
-            DMI.DoubleMetaphoneInternal dm = new DMI.DoubleMetaphoneInternal();
-			dm.BuildKeys(word);
+			DoubleMetaphoneAdamNelson.KeyLength = MaxLength;
 
-			if (dm.PrimaryCode == dm.SecondaryCode || dm.SecondaryCode == null)
+			DoubleMetaphoneAdamNelson dm = new DoubleMetaphoneAdamNelson(word);
+
+			if (dm.PrimaryKey == dm.AlternateKey || dm.AlternateKey == null)
 			{
-				return dm.PrimaryCode;
+				return dm.PrimaryKey;
 			}
 			else
 			{
-				return $"{dm.PrimaryCode},{dm.SecondaryCode}";
+				return $"{dm.PrimaryKey},{dm.AlternateKey}";
 			}
 		}
 	}

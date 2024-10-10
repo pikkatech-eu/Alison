@@ -18,7 +18,7 @@ namespace Alison.Tests
 			(string Word, string Metaphone)[] data = new (string Word, string Metaphone)[]
 			{
 				("Jose", "HS"),
-				// ("cambrillo", "KMPRL,KMPR"),
+				("cambrillo", "KMPRL,KMPR"),
 				("otto", "AT"),
 				("aubrey", "APR"),
 				("maurice", "MRS"),
@@ -140,7 +140,11 @@ namespace Alison.Tests
 			for (int i = 0; i < data.Length; i++)
 			{
 				string word = data[i].Word;
+				DoubleMetaphone.MaxLength = 7;
+
 				string encoding = DoubleMetaphone.Encode(word);
+
+				Console.WriteLine($"{i}:\tword={word}\tencoded={encoding}\texpected={data[i].Metaphone}");
 
 				Assert.That(encoding == data[i].Metaphone);
 			}
