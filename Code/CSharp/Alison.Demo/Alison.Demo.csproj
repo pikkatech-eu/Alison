@@ -52,10 +52,20 @@
     <Compile Include="AlisonDemoForm.Designer.cs">
       <DependentUpon>AlisonDemoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlisonDemoSettings.cs" />
+    <Compile Include="AlisonDemoSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlisonDemoSettingsDialog.Designer.cs">
+      <DependentUpon>AlisonDemoSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AlisonDemoForm.resx">
       <DependentUpon>AlisonDemoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlisonDemoSettingsDialog.resx">
+      <DependentUpon>AlisonDemoSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

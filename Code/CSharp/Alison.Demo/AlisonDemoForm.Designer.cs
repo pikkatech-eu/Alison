@@ -50,6 +50,9 @@
 			this._lblRusselIndex = new System.Windows.Forms.Label();
 			this._btCopyRusselIndex = new System.Windows.Forms.Button();
 			this._tpStringMetrics = new System.Windows.Forms.TabPage();
+			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this._msAlison.SuspendLayout();
 			this._tcAlisonDemo.SuspendLayout();
 			this._tpEncoders.SuspendLayout();
 			this._tlpEncoders.SuspendLayout();
@@ -58,15 +61,17 @@
 			// _msAlison
 			// 
 			this._msAlison.Font = new System.Drawing.Font("Consolas", 10F);
+			this._msAlison.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolsToolStripMenuItem});
 			this._msAlison.Location = new System.Drawing.Point(0, 0);
 			this._msAlison.Name = "_msAlison";
-			this._msAlison.Size = new System.Drawing.Size(1058, 24);
+			this._msAlison.Size = new System.Drawing.Size(1058, 25);
 			this._msAlison.TabIndex = 0;
 			this._msAlison.Text = "menuStrip1";
 			// 
 			// _tsAlison
 			// 
-			this._tsAlison.Location = new System.Drawing.Point(0, 24);
+			this._tsAlison.Location = new System.Drawing.Point(0, 25);
 			this._tsAlison.Name = "_tsAlison";
 			this._tsAlison.Size = new System.Drawing.Size(1058, 25);
 			this._tsAlison.TabIndex = 1;
@@ -86,10 +91,10 @@
 			this._tcAlisonDemo.Controls.Add(this._tpEncoders);
 			this._tcAlisonDemo.Controls.Add(this._tpStringMetrics);
 			this._tcAlisonDemo.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._tcAlisonDemo.Location = new System.Drawing.Point(0, 49);
+			this._tcAlisonDemo.Location = new System.Drawing.Point(0, 50);
 			this._tcAlisonDemo.Name = "_tcAlisonDemo";
 			this._tcAlisonDemo.SelectedIndex = 0;
-			this._tcAlisonDemo.Size = new System.Drawing.Size(1058, 596);
+			this._tcAlisonDemo.Size = new System.Drawing.Size(1058, 595);
 			this._tcAlisonDemo.TabIndex = 3;
 			// 
 			// _tpEncoders
@@ -98,7 +103,7 @@
 			this._tpEncoders.Location = new System.Drawing.Point(4, 24);
 			this._tpEncoders.Name = "_tpEncoders";
 			this._tpEncoders.Padding = new System.Windows.Forms.Padding(3);
-			this._tpEncoders.Size = new System.Drawing.Size(1050, 568);
+			this._tpEncoders.Size = new System.Drawing.Size(1050, 567);
 			this._tpEncoders.TabIndex = 0;
 			this._tpEncoders.Text = "Encoders";
 			this._tpEncoders.UseVisualStyleBackColor = true;
@@ -134,7 +139,7 @@
 			this._tlpEncoders.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this._tlpEncoders.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this._tlpEncoders.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this._tlpEncoders.Size = new System.Drawing.Size(1044, 562);
+			this._tlpEncoders.Size = new System.Drawing.Size(1044, 561);
 			this._tlpEncoders.TabIndex = 0;
 			// 
 			// _btCopyDoubleMetaphone
@@ -147,9 +152,10 @@
 			this._btCopyDoubleMetaphone.Name = "_btCopyDoubleMetaphone";
 			this._btCopyDoubleMetaphone.Size = new System.Drawing.Size(41, 30);
 			this._btCopyDoubleMetaphone.TabIndex = 5;
+			this._btCopyDoubleMetaphone.Tag = "DoubleMetaphone";
 			this._btCopyDoubleMetaphone.Text = "4";
 			this._btCopyDoubleMetaphone.UseVisualStyleBackColor = true;
-			this._btCopyDoubleMetaphone.Click += new System.EventHandler(this.OnCopyDoubleMetaphone);
+			this._btCopyDoubleMetaphone.Click += new System.EventHandler(this.OnCopyEncoding);
 			// 
 			// _lblDoubleMetaphone
 			// 
@@ -182,9 +188,10 @@
 			this._btCopyDaitchMokotoff.Name = "_btCopyDaitchMokotoff";
 			this._btCopyDaitchMokotoff.Size = new System.Drawing.Size(41, 30);
 			this._btCopyDaitchMokotoff.TabIndex = 4;
+			this._btCopyDaitchMokotoff.Tag = "Daitch-Mokotoff";
 			this._btCopyDaitchMokotoff.Text = "4";
 			this._btCopyDaitchMokotoff.UseVisualStyleBackColor = true;
-			this._btCopyDaitchMokotoff.Click += new System.EventHandler(this.OnCopyDaitchMokotoff);
+			this._btCopyDaitchMokotoff.Click += new System.EventHandler(this.OnCopyEncoding);
 			// 
 			// _lblDaitchMokotoff
 			// 
@@ -217,9 +224,10 @@
 			this._btCopyAmericanSoundex.Name = "_btCopyAmericanSoundex";
 			this._btCopyAmericanSoundex.Size = new System.Drawing.Size(41, 30);
 			this._btCopyAmericanSoundex.TabIndex = 3;
+			this._btCopyAmericanSoundex.Tag = "AmericanSoundex";
 			this._btCopyAmericanSoundex.Text = "4";
 			this._btCopyAmericanSoundex.UseVisualStyleBackColor = true;
-			this._btCopyAmericanSoundex.Click += new System.EventHandler(this.OnCopyAmericanSoundex);
+			this._btCopyAmericanSoundex.Click += new System.EventHandler(this.OnCopyEncoding);
 			// 
 			// _lblAmericanSoundex
 			// 
@@ -309,9 +317,10 @@
 			this._btCopyRusselIndex.Name = "_btCopyRusselIndex";
 			this._btCopyRusselIndex.Size = new System.Drawing.Size(41, 30);
 			this._btCopyRusselIndex.TabIndex = 2;
+			this._btCopyRusselIndex.Tag = "Russell";
 			this._btCopyRusselIndex.Text = "4";
 			this._btCopyRusselIndex.UseVisualStyleBackColor = true;
-			this._btCopyRusselIndex.Click += new System.EventHandler(this.OnCopyRussellIndex);
+			this._btCopyRusselIndex.Click += new System.EventHandler(this.OnCopyEncoding);
 			// 
 			// _tpStringMetrics
 			// 
@@ -322,6 +331,21 @@
 			this._tpStringMetrics.TabIndex = 1;
 			this._tpStringMetrics.Text = "Metrics";
 			this._tpStringMetrics.UseVisualStyleBackColor = true;
+			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+			this.toolsToolStripMenuItem.Text = "&Tools";
+			// 
+			// settingsToolStripMenuItem
+			// 
+			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.settingsToolStripMenuItem.Text = "&Settings";
+			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnSettings);
 			// 
 			// AlisonDemoForm
 			// 
@@ -337,6 +361,8 @@
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.Name = "AlisonDemoForm";
 			this.Text = "Alison Demo 1.0";
+			this._msAlison.ResumeLayout(false);
+			this._msAlison.PerformLayout();
 			this._tcAlisonDemo.ResumeLayout(false);
 			this._tpEncoders.ResumeLayout(false);
 			this._tlpEncoders.ResumeLayout(false);
@@ -370,6 +396,8 @@
 		private System.Windows.Forms.Button _btCopyDoubleMetaphone;
 		private System.Windows.Forms.Label _lblDoubleMetaphone;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
 	}
 }
 
