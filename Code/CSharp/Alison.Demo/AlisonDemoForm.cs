@@ -29,6 +29,14 @@ namespace Alison.Demo
 		{
 			InitializeComponent();
 
+			new ToolTip().SetToolTip(this._btCopyRusselIndex, "Copy Russell index to clipboard");
+			new ToolTip().SetToolTip(this._btCopyAmericanSoundex, "Copy American soundex to clipboard");
+			new ToolTip().SetToolTip(this._btCopyDaitchMokotoff, "Copy Daitch-Mokotoff soundex to clipboard");
+			new ToolTip().SetToolTip(this._btCopyDoubleMetaphone, "Copy Double metaphone to clipboard");
+			new ToolTip().SetToolTip(this._btCopyLevenshtein, "Copy Levenshtein distance to clipboard");
+			new ToolTip().SetToolTip(this._btCopyCosineSimilarity, "Copy cosine similarity to clipboard");
+
+
 			this.TAGGED_LABELS.Add("Russell", this._lblRusselIndex);
 			this.TAGGED_LABELS.Add("AmericanSoundex", this._lblAmericanSoundex);
 			this.TAGGED_LABELS.Add("Daitch-Mokotoff", this._lblDaitchMokotoff);
