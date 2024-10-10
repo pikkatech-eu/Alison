@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alison.Library.Encoders;
+using Alison.Library.StringMetrics;
 
 namespace Alison.Tests
 {
@@ -13,8 +14,18 @@ namespace Alison.Tests
 		{
 			// TestRusselIndex();
 
-			string word = "jose";
-			string result = DoubleMetaphone.Encode(word);
+			//string word = "jose";
+			//string result = DoubleMetaphone.Encode(word);
+
+			string word1 = "globe";
+			string word2 = "globus";
+
+			double cos = Cosine.Similarity(word1, word2);
+			Console.WriteLine($"{Cosine.NGramLength} -> {cos}");
+
+			Cosine.NGramLength = 3;
+			cos = Cosine.Similarity(word1, word2);
+			Console.WriteLine($"{Cosine.NGramLength} -> {cos}");
 		}
 
 		private static void TestRusselIndex()

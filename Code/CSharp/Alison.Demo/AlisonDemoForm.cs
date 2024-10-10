@@ -57,6 +57,7 @@ namespace Alison.Demo
 			DoubleMetaphone.MaxLength = this._settings.MetaphoneMaxLength;
 
 			Cosine.CaseInsensitive	= this._settings.CosineSimilarityCaseSensitive;
+			Cosine.NGramLength = this._settings.CosineSimilarityNGramLength;
 		}
 
 		private void OnEncode(object sender, EventArgs e)
@@ -92,6 +93,9 @@ namespace Alison.Demo
 				this._settings = dialog.Settings;
 				this._settings.Save(SETTINGS_FILE_NAME);
 				this.ApplySettingsValues();
+
+				this.OnEncode(sender, e);
+				this.OnText1Changed(sender, e);
 			}
 		}
 
