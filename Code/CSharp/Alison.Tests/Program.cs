@@ -24,7 +24,7 @@ namespace Alison.Tests
 
 			for (int i = 0; i < words.Length; i++)
 			{
-				string encoded = Russel.Encode(words[i]);
+				string encoded = Russell.Encode(words[i]);
 				Console.WriteLine($"{words[i]} -> {encoded}");
 			}
 		}

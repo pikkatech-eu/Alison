@@ -65,7 +65,7 @@ namespace Alison.Tests
 			for (int i = 0; i < words.Length; i++)
 			{
 				string word = words[i];
-				string encoded = Russel.Encode(word);
+				string encoded = Russell.Encode(word);
 
 				Assert.That(encoded == encodings[i]);
 			}
@@ -117,7 +117,7 @@ namespace Alison.Tests
 			for (int i = 0; i < words.Length; i++)
 			{
 				string word = words[i];
-				string encoded = Russel.EncodeAlpha(word);
+				string encoded = Russell.EncodeAlpha(word);
 
 				Assert.That(encoded == alphaEncodings[i]);
 			}

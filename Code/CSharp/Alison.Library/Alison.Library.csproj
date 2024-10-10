@@ -49,7 +49,7 @@
     <Compile Include="Encoders\AmericanSoundex.cs" />
     <Compile Include="Encoders\DoubleMetaphone.cs" />
     <Compile Include="Encoders\DoubleMetaphoneInternal\DoubleMetaphoneAdamNelson.cs" />
-    <Compile Include="Encoders\Russel.cs" />
+    <Compile Include="Encoders\Russell.cs" />
     <Compile Include="Enumerations\SoundexCompletionMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\StringExtensions.cs" />
