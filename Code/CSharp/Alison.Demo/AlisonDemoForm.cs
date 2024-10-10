@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Windows.Forms;
 using Alison.Library.Encoders;
+using Alison.Library.StringMetrics;
 
 namespace Alison.Demo
 {
@@ -32,6 +33,8 @@ namespace Alison.Demo
 			this.TAGGED_LABELS.Add("AmericanSoundex", this._lblAmericanSoundex);
 			this.TAGGED_LABELS.Add("Daitch-Mokotoff", this._lblDaitchMokotoff);
 			this.TAGGED_LABELS.Add("DoubleMetaphone", this._lblDoubleMetaphone);
+			this.TAGGED_LABELS.Add("Levenshtein", this._lblLevenshtein);
+			this.TAGGED_LABELS.Add("Cosine", this._lblCosineSimilarity);
 
 			try
 			{
@@ -52,6 +55,8 @@ namespace Alison.Demo
 			AmericanSoundex.RemoveSurnamePrefixes = this._settings.SoundexRemoveSurnamePrefix;
 
 			DoubleMetaphone.MaxLength = this._settings.MetaphoneMaxLength;
+
+			Cosine.CaseInsensitive	= this._settings.CosineSimilarityCaseSensitive;
 		}
 
 		private void OnEncode(object sender, EventArgs e)
@@ -64,7 +69,7 @@ namespace Alison.Demo
 			this._lblDoubleMetaphone.Text = DoubleMetaphone.Encode(word);
 		}
 
-		private void OnCopyEncoding(object sender, EventArgs e)
+		private void OnCopyResults(object sender, EventArgs e)
 		{
 			if (sender is Button)
 			{
@@ -88,6 +93,30 @@ namespace Alison.Demo
 				this._settings.Save(SETTINGS_FILE_NAME);
 				this.ApplySettingsValues();
 			}
+		}
+
+		private void OnText1Changed(object sender, EventArgs e)
+		{
+			string text1 = this._txText1.Text;
+			string text2 = this._txText2.Text;
+
+			int distance = Levenshtein.Distance(text1, text2);
+			this._lblLevenshtein.Text = distance.ToString();
+
+			double cosineSimilarity = Cosine.Similarity(text1, text2);
+			this._lblCosineSimilarity.Text	= cosineSimilarity.ToString();
+		}
+
+		private void OnText2Changed(object sender, EventArgs e)
+		{
+			string text1 = this._txText1.Text;
+			string text2 = this._txText2.Text;
+
+			int distance = Levenshtein.Distance(text1, text2);
+			this._lblLevenshtein.Text = distance.ToString();
+
+			double cosineSimilarity = Cosine.Similarity(text1, text2);
+			this._lblCosineSimilarity.Text	= cosineSimilarity.ToString();
 		}
 	}
 }

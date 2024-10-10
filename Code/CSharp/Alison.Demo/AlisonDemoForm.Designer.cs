@@ -29,6 +29,8 @@
 		private void InitializeComponent()
 		{
 			this._msAlison = new System.Windows.Forms.MenuStrip();
+			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._tsAlison = new System.Windows.Forms.ToolStrip();
 			this._zsAlison = new System.Windows.Forms.StatusStrip();
 			this._tcAlisonDemo = new System.Windows.Forms.TabControl();
@@ -50,12 +52,23 @@
 			this._lblRusselIndex = new System.Windows.Forms.Label();
 			this._btCopyRusselIndex = new System.Windows.Forms.Button();
 			this._tpStringMetrics = new System.Windows.Forms.TabPage();
-			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this._tlpMetrics = new System.Windows.Forms.TableLayoutPanel();
+			this._btCopyCosineSimilarity = new System.Windows.Forms.Button();
+			this._btCopyLevenshtein = new System.Windows.Forms.Button();
+			this._lblCosineSimilarity = new System.Windows.Forms.Label();
+			this._lblLevenshtein = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
+			this._txText2 = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this._txText1 = new System.Windows.Forms.TextBox();
 			this._msAlison.SuspendLayout();
 			this._tcAlisonDemo.SuspendLayout();
 			this._tpEncoders.SuspendLayout();
 			this._tlpEncoders.SuspendLayout();
+			this._tpStringMetrics.SuspendLayout();
+			this._tlpMetrics.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _msAlison
@@ -68,6 +81,21 @@
 			this._msAlison.Size = new System.Drawing.Size(1058, 25);
 			this._msAlison.TabIndex = 0;
 			this._msAlison.Text = "menuStrip1";
+			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+			this.toolsToolStripMenuItem.Text = "&Tools";
+			// 
+			// settingsToolStripMenuItem
+			// 
+			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+			this.settingsToolStripMenuItem.Text = "&Settings";
+			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnSettings);
 			// 
 			// _tsAlison
 			// 
@@ -155,7 +183,7 @@
 			this._btCopyDoubleMetaphone.Tag = "DoubleMetaphone";
 			this._btCopyDoubleMetaphone.Text = "4";
 			this._btCopyDoubleMetaphone.UseVisualStyleBackColor = true;
-			this._btCopyDoubleMetaphone.Click += new System.EventHandler(this.OnCopyEncoding);
+			this._btCopyDoubleMetaphone.Click += new System.EventHandler(this.OnCopyResults);
 			// 
 			// _lblDoubleMetaphone
 			// 
@@ -191,7 +219,7 @@
 			this._btCopyDaitchMokotoff.Tag = "Daitch-Mokotoff";
 			this._btCopyDaitchMokotoff.Text = "4";
 			this._btCopyDaitchMokotoff.UseVisualStyleBackColor = true;
-			this._btCopyDaitchMokotoff.Click += new System.EventHandler(this.OnCopyEncoding);
+			this._btCopyDaitchMokotoff.Click += new System.EventHandler(this.OnCopyResults);
 			// 
 			// _lblDaitchMokotoff
 			// 
@@ -227,7 +255,7 @@
 			this._btCopyAmericanSoundex.Tag = "AmericanSoundex";
 			this._btCopyAmericanSoundex.Text = "4";
 			this._btCopyAmericanSoundex.UseVisualStyleBackColor = true;
-			this._btCopyAmericanSoundex.Click += new System.EventHandler(this.OnCopyEncoding);
+			this._btCopyAmericanSoundex.Click += new System.EventHandler(this.OnCopyResults);
 			// 
 			// _lblAmericanSoundex
 			// 
@@ -320,32 +348,169 @@
 			this._btCopyRusselIndex.Tag = "Russell";
 			this._btCopyRusselIndex.Text = "4";
 			this._btCopyRusselIndex.UseVisualStyleBackColor = true;
-			this._btCopyRusselIndex.Click += new System.EventHandler(this.OnCopyEncoding);
+			this._btCopyRusselIndex.Click += new System.EventHandler(this.OnCopyResults);
 			// 
 			// _tpStringMetrics
 			// 
+			this._tpStringMetrics.Controls.Add(this._tlpMetrics);
 			this._tpStringMetrics.Location = new System.Drawing.Point(4, 24);
 			this._tpStringMetrics.Name = "_tpStringMetrics";
 			this._tpStringMetrics.Padding = new System.Windows.Forms.Padding(3);
-			this._tpStringMetrics.Size = new System.Drawing.Size(1050, 568);
+			this._tpStringMetrics.Size = new System.Drawing.Size(1050, 567);
 			this._tpStringMetrics.TabIndex = 1;
 			this._tpStringMetrics.Text = "Metrics";
 			this._tpStringMetrics.UseVisualStyleBackColor = true;
 			// 
-			// toolsToolStripMenuItem
+			// _tlpMetrics
 			// 
-			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem});
-			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
-			this.toolsToolStripMenuItem.Text = "&Tools";
+			this._tlpMetrics.ColumnCount = 6;
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this._tlpMetrics.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+			this._tlpMetrics.Controls.Add(this._btCopyCosineSimilarity, 5, 3);
+			this._tlpMetrics.Controls.Add(this._btCopyLevenshtein, 5, 2);
+			this._tlpMetrics.Controls.Add(this._lblCosineSimilarity, 2, 3);
+			this._tlpMetrics.Controls.Add(this._lblLevenshtein, 2, 2);
+			this._tlpMetrics.Controls.Add(this.label9, 0, 3);
+			this._tlpMetrics.Controls.Add(this.label8, 0, 2);
+			this._tlpMetrics.Controls.Add(this._txText2, 3, 1);
+			this._tlpMetrics.Controls.Add(this.label7, 3, 0);
+			this._tlpMetrics.Controls.Add(this.label6, 0, 0);
+			this._tlpMetrics.Controls.Add(this._txText1, 0, 1);
+			this._tlpMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._tlpMetrics.Location = new System.Drawing.Point(3, 3);
+			this._tlpMetrics.Name = "_tlpMetrics";
+			this._tlpMetrics.RowCount = 5;
+			this._tlpMetrics.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this._tlpMetrics.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this._tlpMetrics.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+			this._tlpMetrics.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+			this._tlpMetrics.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this._tlpMetrics.Size = new System.Drawing.Size(1044, 561);
+			this._tlpMetrics.TabIndex = 0;
 			// 
-			// settingsToolStripMenuItem
+			// _btCopyCosineSimilarity
 			// 
-			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.settingsToolStripMenuItem.Text = "&Settings";
-			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnSettings);
+			this._btCopyCosineSimilarity.AutoSize = true;
+			this._btCopyCosineSimilarity.Dock = System.Windows.Forms.DockStyle.Left;
+			this._btCopyCosineSimilarity.Font = new System.Drawing.Font("Wingdings", 12F);
+			this._btCopyCosineSimilarity.Location = new System.Drawing.Point(967, 530);
+			this._btCopyCosineSimilarity.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+			this._btCopyCosineSimilarity.Name = "_btCopyCosineSimilarity";
+			this._btCopyCosineSimilarity.Size = new System.Drawing.Size(41, 30);
+			this._btCopyCosineSimilarity.TabIndex = 10;
+			this._btCopyCosineSimilarity.Tag = "Cosine";
+			this._btCopyCosineSimilarity.Text = "4";
+			this._btCopyCosineSimilarity.UseVisualStyleBackColor = true;
+			this._btCopyCosineSimilarity.Click += new System.EventHandler(this.OnCopyResults);
+			// 
+			// _btCopyLevenshtein
+			// 
+			this._btCopyLevenshtein.AutoSize = true;
+			this._btCopyLevenshtein.Dock = System.Windows.Forms.DockStyle.Left;
+			this._btCopyLevenshtein.Font = new System.Drawing.Font("Wingdings", 12F);
+			this._btCopyLevenshtein.Location = new System.Drawing.Point(967, 498);
+			this._btCopyLevenshtein.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+			this._btCopyLevenshtein.Name = "_btCopyLevenshtein";
+			this._btCopyLevenshtein.Size = new System.Drawing.Size(41, 30);
+			this._btCopyLevenshtein.TabIndex = 9;
+			this._btCopyLevenshtein.Tag = "Levenshtein";
+			this._btCopyLevenshtein.Text = "4";
+			this._btCopyLevenshtein.UseVisualStyleBackColor = true;
+			this._btCopyLevenshtein.Click += new System.EventHandler(this.OnCopyResults);
+			// 
+			// _lblCosineSimilarity
+			// 
+			this._lblCosineSimilarity.AutoSize = true;
+			this._tlpMetrics.SetColumnSpan(this._lblCosineSimilarity, 3);
+			this._lblCosineSimilarity.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._lblCosineSimilarity.Location = new System.Drawing.Point(211, 529);
+			this._lblCosineSimilarity.Name = "_lblCosineSimilarity";
+			this._lblCosineSimilarity.Size = new System.Drawing.Size(750, 32);
+			this._lblCosineSimilarity.TabIndex = 8;
+			this._lblCosineSimilarity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// _lblLevenshtein
+			// 
+			this._lblLevenshtein.AutoSize = true;
+			this._tlpMetrics.SetColumnSpan(this._lblLevenshtein, 3);
+			this._lblLevenshtein.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._lblLevenshtein.Location = new System.Drawing.Point(211, 497);
+			this._lblLevenshtein.Name = "_lblLevenshtein";
+			this._lblLevenshtein.Size = new System.Drawing.Size(750, 32);
+			this._lblLevenshtein.TabIndex = 7;
+			this._lblLevenshtein.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this._tlpMetrics.SetColumnSpan(this.label9, 2);
+			this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label9.Location = new System.Drawing.Point(3, 529);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(202, 32);
+			this.label9.TabIndex = 6;
+			this.label9.Text = "Cosine Similarity";
+			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this._tlpMetrics.SetColumnSpan(this.label8, 2);
+			this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label8.Location = new System.Drawing.Point(3, 497);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(202, 32);
+			this.label8.TabIndex = 5;
+			this.label8.Text = "Levenshtein Distance";
+			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// _txText2
+			// 
+			this._tlpMetrics.SetColumnSpan(this._txText2, 3);
+			this._txText2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._txText2.Location = new System.Drawing.Point(549, 31);
+			this._txText2.Multiline = true;
+			this._txText2.Name = "_txText2";
+			this._txText2.Size = new System.Drawing.Size(492, 463);
+			this._txText2.TabIndex = 4;
+			this._txText2.TextChanged += new System.EventHandler(this.OnText2Changed);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label7.Location = new System.Drawing.Point(549, 0);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(74, 28);
+			this.label7.TabIndex = 2;
+			this.label7.Text = "Text 2";
+			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label6.Location = new System.Drawing.Point(3, 0);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(74, 28);
+			this.label6.TabIndex = 1;
+			this.label6.Text = "Text 1";
+			this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// _txText1
+			// 
+			this._tlpMetrics.SetColumnSpan(this._txText1, 3);
+			this._txText1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._txText1.Location = new System.Drawing.Point(3, 31);
+			this._txText1.Multiline = true;
+			this._txText1.Name = "_txText1";
+			this._txText1.Size = new System.Drawing.Size(540, 463);
+			this._txText1.TabIndex = 3;
+			this._txText1.TextChanged += new System.EventHandler(this.OnText1Changed);
 			// 
 			// AlisonDemoForm
 			// 
@@ -367,6 +532,9 @@
 			this._tpEncoders.ResumeLayout(false);
 			this._tlpEncoders.ResumeLayout(false);
 			this._tlpEncoders.PerformLayout();
+			this._tpStringMetrics.ResumeLayout(false);
+			this._tlpMetrics.ResumeLayout(false);
+			this._tlpMetrics.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -398,6 +566,17 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+		private System.Windows.Forms.TableLayoutPanel _tlpMetrics;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.TextBox _txText2;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox _txText1;
+		private System.Windows.Forms.Button _btCopyLevenshtein;
+		private System.Windows.Forms.Label _lblCosineSimilarity;
+		private System.Windows.Forms.Label _lblLevenshtein;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button _btCopyCosineSimilarity;
 	}
 }
 
