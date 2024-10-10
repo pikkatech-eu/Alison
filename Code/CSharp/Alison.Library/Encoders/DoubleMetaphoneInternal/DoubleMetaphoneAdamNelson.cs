@@ -20,85 +20,114 @@ namespace Alison.Library.Encoders
 	{
 		#region Purlic static Properties
 		/// <summary>
-		/// The length of the metaphone keys produced.
+		///		The length of the metaphone keys produced.
 		/// </summary>
 		public static int KeyLength {get;set;}  = 4;
 		#endregion
 
 		#region Private Variables
-		///StringBuilders used to construct the keys
-		private StringBuilder m_primaryKey, m_alternateKey;
+		/// <summary>
+		/// StringBuilders used to construct the keys.
+		/// </summary>
+		private StringBuilder _primaryKeyBuilder;
+		private StringBuilder _alternateKeyBuilder;
 
-		///Actual keys, populated after construction
-		private String m_primaryKeyString, m_alternateKeyString;
+		/// <summary>
+		/// Actual keys, populated after construction.
+		/// </summary>
+		private string _primaryKey;
+		private string _alternateKey;
 
-		///Variables to track the key length w/o having to grab the .Length attr
-		private int m_primaryKeyLength, m_alternateKeyLength;
+		/// <summary>
+		/// Variables to track the key length (without having to grab the Length attriibute).
+		/// </summary>
+		private int _primaryKeyLength;
+		private int _alternateKeyLength;
 
-		///Working copy of the word, and the original word
-		private String m_word, m_originalWord;
+		/// <summary>
+		/// Working copy of the word, and the original word.
+		/// </summary>
+		private string _word;
+		private string _originalWord;
 
-		///Length and last valid zero-based index into word
-		int m_length, m_last;
+		/// <summary>
+		/// Current length of the word.
+		/// </summary>
+		private int _length;
 
-		///Flag indicating if an alternate metaphone key was computed for the word
-		bool m_hasAlternate;
+		/// <summary>
+		/// The last valid zero-based index into word.
+		/// </summary>
+		private int _last;
+
+		/// <summary>
+		/// Flag indicating if an alternate metaphone key was computed for the word.
+		/// </summary>
+		private bool _hasAlternate;
 		#endregion
 
 		#region Construction
 		/// <summary>
-		/// Default ctor, initializes by computing the keys of an empty string, which are both empty strings
+		/// Default constructor.
+		/// Initializes by computing the keys of an empty string, which are both empty strings.
 		/// </summary>
 		public DoubleMetaphoneAdamNelson()
 		{
-			//Leave room at the end for writing a bit beyond the length; keys are chopped at the end anyway
-			m_primaryKey = new StringBuilder(KeyLength + 2);
-			m_alternateKey = new StringBuilder(KeyLength + 2);
+			// Leave room at the end for writing a bit beyond the length; keys are chopped at the end anyway.
+			this._primaryKeyBuilder = new StringBuilder(KeyLength + 2);
+			this._alternateKeyBuilder = new StringBuilder(KeyLength + 2);
 
-			ComputeKeys("");
+			this.ComputeKeys("");
 		}
 
-		/// <summary>Constructs a new DoubleMetaphone object, and initializes it with
-		///     the metaphone keys for a given word</summary>
-		/// 
-		/// <param name="word">Word with which to initialize the object.  Computes the metaphone keys
-		///     of this word.</param>
-		public DoubleMetaphoneAdamNelson(String word)
+		/// <summary>
+		///   Constructs a new DoubleMetaphone object, and initializes it with the metaphone keys for a given word.
+		/// </summary>
+		/// <param name="word">
+		///		Word with which to initialize the object.  Computes the metaphone keys of this word.
+		///	</param>
+		public DoubleMetaphoneAdamNelson(string word)
 		{
-			//Leave room at the end for writing a bit beyond the length; keys are chopped at the end anyway
-			m_primaryKey = new StringBuilder(KeyLength + 2);
-			m_alternateKey = new StringBuilder(KeyLength + 2);
+			// Leave room at the end for writing a bit beyond the length; keys are chopped at the end anyway.
+			this._primaryKeyBuilder = new StringBuilder(KeyLength + 2);
+			this._alternateKeyBuilder = new StringBuilder(KeyLength + 2);
 
-			ComputeKeys(word);
+			this.ComputeKeys(word);
 		}
 		#endregion
 
 		#region Public Properties
-		/// <summary>The primary metaphone key for the current word</summary>
-		public String PrimaryKey
+		/// <summary>
+		///		The primary metaphone key for the current word.
+		/// </summary>
+		public string PrimaryKey
 		{
 			get
 			{
-				return m_primaryKeyString;
+				return this._primaryKey;
 			}
 		}
 
-		/// <summary>The alternate metaphone key for the current word, or null if the current
-		///     word does not have an alternate key by Double Metaphone</summary>
-		public String AlternateKey
+		/// <summary>
+		///		The alternate metaphone key for the current word, 
+		///		or null if the current word does not have an alternate key by Double Metaphone.
+		/// </summary>
+		public string AlternateKey
 		{
 			get
 			{
-				return m_hasAlternate ? m_alternateKeyString : null;
+				return this._hasAlternate ? this._alternateKey : null;
 			}
 		}
 
-		/// <summary>Original word for which the keys were computed</summary>
-		public String Word
+		/// <summary>
+		///		Original word for which the keys were computed.
+		///	</summary>
+		public string Word
 		{
 			get
 			{
-				return m_originalWord;
+				return this._originalWord;
 			}
 		}
 		#endregion
@@ -112,7 +141,7 @@ namespace Alison.Library.Encoders
 		/// <param name="alternateKey">
 		///		Reference to receive the alternate metaphone key, or be set to null if the word has no alternate key by double metaphone
 		///	</param>
-		public static void Encode(String word, ref String primaryKey, ref String alternateKey)
+		public static void Encode(string word, out string primaryKey, out string alternateKey)
 		{
 			DoubleMetaphoneAdamNelson mp = new DoubleMetaphoneAdamNelson(word);
 
@@ -128,36 +157,37 @@ namespace Alison.Library.Encoders
 		/// <param name="word">
 		///		New word to set to current word. Discards previous metaphone keys and computes new keys for this word.
 		///	</param>
-		private void ComputeKeys(String word)
+		private void ComputeKeys(string word)
 		{
-			m_primaryKey.Length = 0;
-			m_alternateKey.Length = 0;
+			this._primaryKeyBuilder.Length = 0;
+			this._alternateKeyBuilder.Length = 0;
 
-			m_primaryKeyString = "";
-			m_alternateKeyString = "";
+			this._primaryKey = "";
+			this._alternateKey = "";
 
-			m_primaryKeyLength = m_alternateKeyLength = 0;
+			this._primaryKeyLength = 0;
+			this._alternateKeyLength = 0;
 
-			m_hasAlternate = false;
+			this._hasAlternate = false;
 
-			m_originalWord = word;
+			this._originalWord = word;
 
-			//Copy word to an internal working buffer so it can be modified
-			m_word = word;
+			// Copy word to an internal working buffer so it can be modified
+			this._word = word;
 
-			m_length = m_word.Length;
+			this._length = this._word.Length;
 
-			//Compute last valid index into word
-			m_last = m_length - 1;
+			// Compute last valid index into word
+			this._last = this._length - 1;
 
-			//Padd with four spaces, so word can be over-indexed without fear of exception
-			m_word = String.Concat(m_word, "     ");
+			// Pad with four spaces, so word can be over-indexed without fear of exception.
+			this._word = String.Concat(this._word, "     ");
 
-			//Convert to upper case, since metaphone is not case sensitive
-			m_word = m_word.ToUpper();
+			// Convert to upper case, since metaphone is not case sensitive
+			this._word = this._word.ToUpper();
 
-			//Now build the keys
-			BuildMetaphoneKeys();
+			// Now build the keys
+			this.BuildMetaphoneKeys();
 		}
 
 		/// <summary>
@@ -168,27 +198,28 @@ namespace Alison.Library.Encoders
 		private void BuildMetaphoneKeys()
 		{
 			int current = 0;
-			if (m_length < 1)
+
+			if (this._length < 1)
 				return;
 
 			//skip these when at start of word
-			if (areStringsAt(0, 2, "GN", "KN", "PN", "WR", "PS"))
+			if (AreStringsAt(0, 2, "GN", "KN", "PN", "WR", "PS"))
 				current += 1;
 
 			//Initial 'X' is pronounced 'Z' e.g. 'Xavier'
-			if (m_word[0] == 'X')
+			if (this._word[0] == 'X')
 			{
-				addMetaphoneCharacter("S"); //'Z' maps to 'S'
+				AddMetaphoneCharacter("S"); //'Z' maps to 'S'
 				current += 1;
 			}
 
 			// ==== main loop ====
-			while ((m_primaryKeyLength < KeyLength) || (m_alternateKeyLength < KeyLength))
+			while ((this._primaryKeyLength < KeyLength) || (this._alternateKeyLength < KeyLength))
 			{
-				if (current >= m_length)
+				if (current >= this._length)
 					break;
 
-				switch (m_word[current])
+				switch (this._word[current])
 				{
 					case 'A':
 					case 'E':
@@ -198,23 +229,23 @@ namespace Alison.Library.Encoders
 					case 'Y':
 						if (current == 0)
 							//all init vowels now map to 'A'
-							addMetaphoneCharacter("A");
+							AddMetaphoneCharacter("A");
 						current += 1;
 						break;
 
 					case 'B':
 
 						//"-mb", e.g", "dumb", already skipped over...
-						addMetaphoneCharacter("P");
+						AddMetaphoneCharacter("P");
 
-						if (m_word[current + 1] == 'B')
+						if (this._word[current + 1] == 'B')
 							current += 2;
 						else
 							current += 1;
 						break;
 
 					case 'Ç':
-						addMetaphoneCharacter("S");
+						AddMetaphoneCharacter("S");
 						current += 1;
 						break;
 
@@ -222,192 +253,190 @@ namespace Alison.Library.Encoders
 						//various germanic
 						if ((current > 1)
 							&& !IsVowel(current - 2)
-							&& areStringsAt((current - 1), 3, "ACH")
-							&& ((m_word[current + 2] != 'I') && ((m_word[current + 2] != 'E')
-																	|| areStringsAt((current - 2), 6, "BACHER", "MACHER"))))
+							&& AreStringsAt((current - 1), 3, "ACH")
+							&& ((this._word[current + 2] != 'I') && ((this._word[current + 2] != 'E') || this.AreStringsAt((current - 2), 6, "BACHER", "MACHER"))))
 						{
-							addMetaphoneCharacter("K");
+							this.AddMetaphoneCharacter("K");
 							current += 2;
 							break;
 						}
 
 						//special case 'caesar'
-						if ((current == 0) && areStringsAt(current, 6, "CAESAR"))
+						if ((current == 0) && this.AreStringsAt(current, 6, "CAESAR"))
 						{
-							addMetaphoneCharacter("S");
+							this.AddMetaphoneCharacter("S");
 							current += 2;
 							break;
 						}
 
 						//italian 'chianti'
-						if (areStringsAt(current, 4, "CHIA"))
+						if (this.AreStringsAt(current, 4, "CHIA"))
 						{
-							addMetaphoneCharacter("K");
+							this.AddMetaphoneCharacter("K");
 							current += 2;
 							break;
 						}
 
-						if (areStringsAt(current, 2, "CH"))
+						if (AreStringsAt(current, 2, "CH"))
 						{
 							//find 'michael'
-							if ((current > 0) && areStringsAt(current, 4, "CHAE"))
+							if ((current > 0) && AreStringsAt(current, 4, "CHAE"))
 							{
-								AddMetaphoneCharacter("K", "X");
+								this.AddMetaphoneCharacter("K", "X");
 								current += 2;
 								break;
 							}
 
 							//greek roots e.g. 'chemistry', 'chorus'
 							if ((current == 0)
-								&& (areStringsAt((current + 1), 5, "HARAC", "HARIS")
-										|| areStringsAt((current + 1), 3, "HOR", "HYM", "HIA", "HEM"))
-								&& !areStringsAt(0, 5, "CHORE"))
+								&& (this.AreStringsAt((current + 1), 5, "HARAC", "HARIS") || this.AreStringsAt((current + 1), 3, "HOR", "HYM", "HIA", "HEM"))
+								&& !this.AreStringsAt(0, 5, "CHORE"))
 							{
-								addMetaphoneCharacter("K");
+								this.AddMetaphoneCharacter("K");
 								current += 2;
 								break;
 							}
 
 							//germanic, greek, or otherwise 'ch' for 'kh' sound
-							if ((areStringsAt(0, 4, "VAN ", "VON ") || areStringsAt(0, 3, "SCH"))
+							if ((this.AreStringsAt(0, 4, "VAN ", "VON ") || this.AreStringsAt(0, 3, "SCH"))
 								// 'architect but not 'arch', 'orchestra', 'orchid'
-								|| areStringsAt((current - 2), 6, "ORCHES", "ARCHIT", "ORCHID")
-								|| areStringsAt((current + 2), 1, "T", "S")
-								|| ((areStringsAt((current - 1), 1, "A", "O", "U", "E") || (current == 0))
+								|| this.AreStringsAt((current - 2), 6, "ORCHES", "ARCHIT", "ORCHID")
+								|| this.AreStringsAt((current + 2), 1, "T", "S")
+								|| ((this.AreStringsAt((current - 1), 1, "A", "O", "U", "E") || (current == 0))
 									//e.g., 'wachtler', 'wechsler', but not 'tichner'
-									&& areStringsAt((current + 2), 1, "L", "R", "N", "M", "B", "H", "F", "V", "W", " ")))
+									&& this.AreStringsAt((current + 2), 1, "L", "R", "N", "M", "B", "H", "F", "V", "W", " ")))
 							{
-								addMetaphoneCharacter("K");
+								this.AddMetaphoneCharacter("K");
 							}
 							else
 							{
 								if (current > 0)
 								{
-									if (areStringsAt(0, 2, "MC"))
+									if (this.AreStringsAt(0, 2, "MC"))
 										//e.g., "McHugh"
-										addMetaphoneCharacter("K");
+										this.AddMetaphoneCharacter("K");
 									else
-										AddMetaphoneCharacter("X", "K");
+										this.AddMetaphoneCharacter("X", "K");
 								}
 								else
-									addMetaphoneCharacter("X");
+									this.AddMetaphoneCharacter("X");
 							}
 							current += 2;
 							break;
 						}
 						//e.g, 'czerny'
-						if (areStringsAt(current, 2, "CZ") && !areStringsAt((current - 2), 4, "WICZ"))
+						if (this.AreStringsAt(current, 2, "CZ") && !this.AreStringsAt((current - 2), 4, "WICZ"))
 						{
-							AddMetaphoneCharacter("S", "X");
+							this.AddMetaphoneCharacter("S", "X");
 							current += 2;
 							break;
 						}
 
 						//e.g., 'focaccia'
-						if (areStringsAt((current + 1), 3, "CIA"))
+						if (this.AreStringsAt((current + 1), 3, "CIA"))
 						{
-							addMetaphoneCharacter("X");
+							this.AddMetaphoneCharacter("X");
 							current += 3;
 							break;
 						}
 
 						//double 'C', but not if e.g. 'McClellan'
-						if (areStringsAt(current, 2, "CC") && !((current == 1) && (m_word[0] == 'M')))
+						if (this.AreStringsAt(current, 2, "CC") && !((current == 1) && (_word[0] == 'M')))
 							//'bellocchio' but not 'bacchus'
-							if (areStringsAt((current + 2), 1, "I", "E", "H") && !areStringsAt((current + 2), 2, "HU"))
+							if (this.AreStringsAt((current + 2), 1, "I", "E", "H") && !this.AreStringsAt((current + 2), 2, "HU"))
 							{
 								//'accident', 'accede' 'succeed'
-								if (((current == 1) && (m_word[current - 1] == 'A'))
-									|| areStringsAt((current - 1), 5, "UCCEE", "UCCES"))
-									addMetaphoneCharacter("KS");
+								if (((current == 1) && (_word[current - 1] == 'A')) || this.AreStringsAt((current - 1), 5, "UCCEE", "UCCES"))
+									AddMetaphoneCharacter("KS");
+
 								//'bacci', 'bertucci', other italian
 								else
-									addMetaphoneCharacter("X");
+									this.AddMetaphoneCharacter("X");
 								current += 3;
 								break;
 							}
 							else
 							{//Pierce's rule
-								addMetaphoneCharacter("K");
+								this.AddMetaphoneCharacter("K");
 								current += 2;
 								break;
 							}
 
-						if (areStringsAt(current, 2, "CK", "CG", "CQ"))
+						if (this.AreStringsAt(current, 2, "CK", "CG", "CQ"))
 						{
-							addMetaphoneCharacter("K");
+							this.AddMetaphoneCharacter("K");
 							current += 2;
 							break;
 						}
 
-						if (areStringsAt(current, 2, "CI", "CE", "CY"))
+						if (this.AreStringsAt(current, 2, "CI", "CE", "CY"))
 						{
 							//italian vs. english
-							if (areStringsAt(current, 3, "CIO", "CIE", "CIA"))
-								AddMetaphoneCharacter("S", "X");
+							if (this.AreStringsAt(current, 3, "CIO", "CIE", "CIA"))
+								this.AddMetaphoneCharacter("S", "X");
 							else
-								addMetaphoneCharacter("S");
+								this.AddMetaphoneCharacter("S");
 							current += 2;
 							break;
 						}
 
 						//else
-						addMetaphoneCharacter("K");
+						this.AddMetaphoneCharacter("K");
 
 						//name sent in 'mac caffrey', 'mac gregor
-						if (areStringsAt((current + 1), 2, " C", " Q", " G"))
+						if (this.AreStringsAt((current + 1), 2, " C", " Q", " G"))
 							current += 3;
 						else
-							if (areStringsAt((current + 1), 1, "C", "K", "Q")
-								&& !areStringsAt((current + 1), 2, "CE", "CI"))
+							if (this.AreStringsAt((current + 1), 1, "C", "K", "Q")
+								&& !this.AreStringsAt((current + 1), 2, "CE", "CI"))
 							current += 2;
 						else
 							current += 1;
 						break;
 
 					case 'D':
-						if (areStringsAt(current, 2, "DG"))
-							if (areStringsAt((current + 2), 1, "I", "E", "Y"))
+						if (this.AreStringsAt(current, 2, "DG"))
+							if (this.AreStringsAt((current + 2), 1, "I", "E", "Y"))
 							{
 								//e.g. 'edge'
-								addMetaphoneCharacter("J");
+								this.AddMetaphoneCharacter("J");
 								current += 3;
 								break;
 							}
 							else
 							{
 								//e.g. 'edgar'
-								addMetaphoneCharacter("TK");
+								this.AddMetaphoneCharacter("TK");
 								current += 2;
 								break;
 							}
 
-						if (areStringsAt(current, 2, "DT", "DD"))
+						if (this.AreStringsAt(current, 2, "DT", "DD"))
 						{
-							addMetaphoneCharacter("T");
+							this.AddMetaphoneCharacter("T");
 							current += 2;
 							break;
 						}
 
 						//else
-						addMetaphoneCharacter("T");
+						this.AddMetaphoneCharacter("T");
 						current += 1;
 						break;
 
 					case 'F':
-						if (m_word[current + 1] == 'F')
+						if (this._word[current + 1] == 'F')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("F");
+						this.AddMetaphoneCharacter("F");
 						break;
 
 					case 'G':
-						if (m_word[current + 1] == 'H')
+						if (this._word[current + 1] == 'H')
 						{
 							if ((current > 0) && !IsVowel(current - 1))
 							{
-								addMetaphoneCharacter("K");
+								this.AddMetaphoneCharacter("K");
 								current += 2;
 								break;
 							}
@@ -417,20 +446,20 @@ namespace Alison.Library.Encoders
 								//'ghislane', ghiradelli
 								if (current == 0)
 								{
-									if (m_word[current + 2] == 'I')
-										addMetaphoneCharacter("J");
+									if (this._word[current + 2] == 'I')
+										this.AddMetaphoneCharacter("J");
 									else
-										addMetaphoneCharacter("K");
+										this.AddMetaphoneCharacter("K");
 									current += 2;
 									break;
 								}
 							}
 							//Parker's rule (with some further refinements) - e.g., 'hugh'
-							if (((current > 1) && areStringsAt((current - 2), 1, "B", "H", "D"))
+							if (((current > 1) && this.AreStringsAt((current - 2), 1, "B", "H", "D"))
 								//e.g., 'bough'
-								|| ((current > 2) && areStringsAt((current - 3), 1, "B", "H", "D"))
+								|| ((current > 2) && this.AreStringsAt((current - 3), 1, "B", "H", "D"))
 								//e.g., 'broughton'
-								|| ((current > 3) && areStringsAt((current - 4), 1, "B", "H")))
+								|| ((current > 3) && this.AreStringsAt((current - 4), 1, "B", "H")))
 							{
 								current += 2;
 								break;
@@ -439,90 +468,88 @@ namespace Alison.Library.Encoders
 							{
 								//e.g., 'laugh', 'McLaughlin', 'cough', 'gough', 'rough', 'tough'
 								if ((current > 2)
-									&& (m_word[current - 1] == 'U')
-									&& areStringsAt((current - 3), 1, "C", "G", "L", "R", "T"))
+									&& (this._word[current - 1] == 'U')
+									&& this.AreStringsAt((current - 3), 1, "C", "G", "L", "R", "T"))
 								{
-									addMetaphoneCharacter("F");
+									this.AddMetaphoneCharacter("F");
 								}
 								else
-									if ((current > 0) && m_word[current - 1] != 'I')
-									addMetaphoneCharacter("K");
+									if ((current > 0) && this._word[current - 1] != 'I')
+									this.AddMetaphoneCharacter("K");
 
 								current += 2;
 								break;
 							}
 						}
 
-						if (m_word[current + 1] == 'N')
+						if (this._word[current + 1] == 'N')
 						{
 							if ((current == 1) && IsVowel(0) && !IsWordSlavoGermanic())
 							{
-								AddMetaphoneCharacter("KN", "N");
+								this.AddMetaphoneCharacter("KN", "N");
 							}
 							else
 								//not e.g. 'cagney'
-								if (!areStringsAt((current + 2), 2, "EY")
-									&& (m_word[current + 1] != 'Y') && !IsWordSlavoGermanic())
+								if (!this.AreStringsAt((current + 2), 2, "EY")
+									&& (this._word[current + 1] != 'Y') && !IsWordSlavoGermanic())
 							{
-								AddMetaphoneCharacter("N", "KN");
+								this.AddMetaphoneCharacter("N", "KN");
 							}
 							else
-								addMetaphoneCharacter("KN");
+								this.AddMetaphoneCharacter("KN");
 							current += 2;
 							break;
 						}
 
 						//'tagliaro'
-						if (areStringsAt((current + 1), 2, "LI") && !IsWordSlavoGermanic())
+						if (this.AreStringsAt((current + 1), 2, "LI") && !IsWordSlavoGermanic())
 						{
-							AddMetaphoneCharacter("KL", "L");
+							this.AddMetaphoneCharacter("KL", "L");
 							current += 2;
 							break;
 						}
 
 						//-ges-,-gep-,-gel-, -gie- at beginning
 						if ((current == 0)
-							&& ((m_word[current + 1] == 'Y')
-									|| areStringsAt((current + 1), 2, "ES", "EP", "EB", "EL", "EY", "IB", "IL", "IN", "IE", "EI", "ER")))
+							&& ((this._word[current + 1] == 'Y') || this.AreStringsAt((current + 1), 2, "ES", "EP", "EB", "EL", "EY", "IB", "IL", "IN", "IE", "EI", "ER")))
 						{
-							AddMetaphoneCharacter("K", "J");
+							this.AddMetaphoneCharacter("K", "J");
 							current += 2;
 							break;
 						}
 
 						// -ger-,  -gy-
-						if ((areStringsAt((current + 1), 2, "ER") || (m_word[current + 1] == 'Y'))
-							&& !areStringsAt(0, 6, "DANGER", "RANGER", "MANGER")
-							&& !areStringsAt((current - 1), 1, "E", "I")
-							&& !areStringsAt((current - 1), 3, "RGY", "OGY"))
+						if ((this.AreStringsAt((current + 1), 2, "ER") || (this._word[current + 1] == 'Y'))
+							&& !this.AreStringsAt(0, 6, "DANGER", "RANGER", "MANGER")
+							&& !this.AreStringsAt((current - 1), 1, "E", "I")
+							&& !this.AreStringsAt((current - 1), 3, "RGY", "OGY"))
 						{
-							AddMetaphoneCharacter("K", "J");
+							this.AddMetaphoneCharacter("K", "J");
 							current += 2;
 							break;
 						}
 
 						// italian e.g, 'biaggi'
-						if (areStringsAt((current + 1), 1, "E", "I", "Y") || areStringsAt((current - 1), 4, "AGGI", "OGGI"))
+						if (this.AreStringsAt((current + 1), 1, "E", "I", "Y") || this.AreStringsAt((current - 1), 4, "AGGI", "OGGI"))
 						{
 							//obvious germanic
-							if ((areStringsAt(0, 4, "VAN ", "VON ") || areStringsAt(0, 3, "SCH"))
-								|| areStringsAt((current + 1), 2, "ET"))
-								addMetaphoneCharacter("K");
+							if ((this.AreStringsAt(0, 4, "VAN ", "VON ") || this.AreStringsAt(0, 3, "SCH")) || this.AreStringsAt((current + 1), 2, "ET"))
+								this.AddMetaphoneCharacter("K");
 							else
 								//always soft if french ending
-								if (areStringsAt((current + 1), 4, "IER "))
-								addMetaphoneCharacter("J");
+								if (this.AreStringsAt((current + 1), 4, "IER "))
+								this.AddMetaphoneCharacter("J");
 							else
-								AddMetaphoneCharacter("J", "K");
+								this.AddMetaphoneCharacter("J", "K");
 							current += 2;
 							break;
 						}
 
-						if (m_word[current + 1] == 'G')
+						if (this._word[current + 1] == 'G')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("K");
+						this.AddMetaphoneCharacter("K");
 						break;
 
 					case 'H':
@@ -530,7 +557,7 @@ namespace Alison.Library.Encoders
 						if (((current == 0) || IsVowel(current - 1))
 							&& IsVowel(current + 1))
 						{
-							addMetaphoneCharacter("H");
+							this.AddMetaphoneCharacter("H");
 							current += 2;
 						}
 						else//also takes care of 'HH'
@@ -539,56 +566,55 @@ namespace Alison.Library.Encoders
 
 					case 'J':
 						//obvious spanish, 'jose', 'san jacinto'
-						if (areStringsAt(current, 4, "JOSE") || areStringsAt(0, 4, "SAN "))
+						if (this.AreStringsAt(current, 4, "JOSE") || this.AreStringsAt(0, 4, "SAN "))
 						{
-							if (((current == 0) && (m_word[current + 4] == ' ')) || areStringsAt(0, 4, "SAN "))
-								addMetaphoneCharacter("H");
+							if (((current == 0) && (this._word[current + 4] == ' ')) || this.AreStringsAt(0, 4, "SAN "))
+								this.AddMetaphoneCharacter("H");
 							else
 							{
-								AddMetaphoneCharacter("J", "H");
+								this.AddMetaphoneCharacter("J", "H");
 							}
 							current += 1;
 							break;
 						}
 
-						if ((current == 0) && !areStringsAt(current, 4, "JOSE"))
-							AddMetaphoneCharacter("J", "A");//Yankelovich/Jankelowicz
+						if ((current == 0) && !this.AreStringsAt(current, 4, "JOSE"))
+							this.AddMetaphoneCharacter("J", "A");	//Yankelovich/Jankelowicz
 						else
 							//spanish pron. of e.g. 'bajador'
-							if (IsVowel(current - 1)
-								&& !IsWordSlavoGermanic()
-								&& ((m_word[current + 1] == 'A') || (m_word[current + 1] == 'O')))
-							AddMetaphoneCharacter("J", "H");
+							if (this.IsVowel(current - 1)
+								&& !this.IsWordSlavoGermanic() && ((this._word[current + 1] == 'A') || (this._word[current + 1] == 'O')))
+							this.AddMetaphoneCharacter("J", "H");
 						else
-							if (current == m_last)
-							AddMetaphoneCharacter("J", " ");
+							if (current == _last)
+							this.AddMetaphoneCharacter("J", " ");
 						else
-							if (!areStringsAt((current + 1), 1, "L", "T", "K", "S", "N", "M", "B", "Z")
-								&& !areStringsAt((current - 1), 1, "S", "K", "L"))
-							addMetaphoneCharacter("J");
+							if (!this.AreStringsAt((current + 1), 1, "L", "T", "K", "S", "N", "M", "B", "Z")
+								&& !this.AreStringsAt((current - 1), 1, "S", "K", "L"))
+							this.AddMetaphoneCharacter("J");
 
-						if (m_word[current + 1] == 'J')//it could happen!
+						if (this._word[current + 1] == 'J') //it could happen!
 							current += 2;
 						else
 							current += 1;
 						break;
 
 					case 'K':
-						if (m_word[current + 1] == 'K')
+						if (this._word[current + 1] == 'K')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("K");
+						this.AddMetaphoneCharacter("K");
 						break;
 
 					case 'L':
-						if (m_word[current + 1] == 'L')
+						if (this._word[current + 1] == 'L')
 						{
 							//spanish e.g. 'cabrillo', 'gallegos'
-							if (((current == (m_length - 3)) && areStringsAt((current - 1), 4, "ILLO", "ILLA", "ALLE"))
-								|| ((areStringsAt((m_last - 1), 2, "AS", "OS") || areStringsAt(m_last, 1, "A", "O")) && areStringsAt((current - 1), 4, "ALLE")))
+							if (((current == (_length - 3)) && this.AreStringsAt((current - 1), 4, "ILLO", "ILLA", "ALLE"))
+								|| ((this.AreStringsAt((_last - 1), 2, "AS", "OS") || this.AreStringsAt(_last, 1, "A", "O")) && this.AreStringsAt((current - 1), 4, "ALLE")))
 							{
-								AddMetaphoneCharacter("L", " ");
+								this.AddMetaphoneCharacter("L", " ");
 								current += 2;
 								break;
 							}
@@ -599,69 +625,69 @@ namespace Alison.Library.Encoders
 							current += 1;
 						}
 
-						addMetaphoneCharacter("L");
+						this.AddMetaphoneCharacter("L");
 
 						break;
 
 					case 'M':
-						if ((areStringsAt((current - 1), 3, "UMB")
-								&& (((current + 1) == m_last) || areStringsAt((current + 2), 2, "ER")))
+						if ((this.AreStringsAt((current - 1), 3, "UMB")
+								&& (((current + 1) == _last) || this.AreStringsAt((current + 2), 2, "ER")))
 							//'dumb','thumb'
-							|| (m_word[current + 1] == 'M'))
+							|| (this._word[current + 1] == 'M'))
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("M");
+						this.AddMetaphoneCharacter("M");
 						break;
 
 					case 'N':
-						if (m_word[current + 1] == 'N')
+						if (this._word[current + 1] == 'N')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("N");
+						this.AddMetaphoneCharacter("N");
 						break;
 
 					case 'Ñ':
 						current += 1;
-						addMetaphoneCharacter("N");
+						this.AddMetaphoneCharacter("N");
 						break;
 
 					case 'P':
-						if (m_word[current + 1] == 'H')
+						if (this._word[current + 1] == 'H')
 						{
-							addMetaphoneCharacter("F");
+							this.AddMetaphoneCharacter("F");
 							current += 2;
 							break;
 						}
 
 						//also account for "campbell", "raspberry"
-						if (areStringsAt((current + 1), 1, "P", "B"))
+						if (this.AreStringsAt((current + 1), 1, "P", "B"))
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("P");
+						this.AddMetaphoneCharacter("P");
 						break;
 
 					case 'Q':
-						if (m_word[current + 1] == 'Q')
+						if (this._word[current + 1] == 'Q')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("K");
+						this.AddMetaphoneCharacter("K");
 						break;
 
 					case 'R':
 						//french e.g. 'rogier', but exclude 'hochmeier'
-						if ((current == m_last)
-							&& !IsWordSlavoGermanic()
-							&& areStringsAt((current - 2), 2, "IE")
-							&& !areStringsAt((current - 4), 2, "ME", "MA"))
-							AddMetaphoneCharacter("", "R");
+						if ((current == _last)
+							&& !this.IsWordSlavoGermanic()
+							&& this.AreStringsAt((current - 2), 2, "IE")
+							&& !this.AreStringsAt((current - 4), 2, "ME", "MA"))
+							this.AddMetaphoneCharacter("", "R");
 						else
-							addMetaphoneCharacter("R");
+							this.AddMetaphoneCharacter("R");
 
-						if (m_word[current + 1] == 'R')
+						if (this._word[current + 1] == 'R')
 							current += 2;
 						else
 							current += 1;
@@ -669,71 +695,69 @@ namespace Alison.Library.Encoders
 
 					case 'S':
 						//special cases 'island', 'isle', 'carlisle', 'carlysle'
-						if (areStringsAt((current - 1), 3, "ISL", "YSL"))
+						if (this.AreStringsAt((current - 1), 3, "ISL", "YSL"))
 						{
 							current += 1;
 							break;
 						}
 
 						//special case 'sugar-'
-						if ((current == 0) && areStringsAt(current, 5, "SUGAR"))
+						if ((current == 0) && this.AreStringsAt(current, 5, "SUGAR"))
 						{
-							AddMetaphoneCharacter("X", "S");
+							this.AddMetaphoneCharacter("X", "S");
 							current += 1;
 							break;
 						}
 
-						if (areStringsAt(current, 2, "SH"))
+						if (this.AreStringsAt(current, 2, "SH"))
 						{
 							//germanic
-							if (areStringsAt((current + 1), 4, "HEIM", "HOEK", "HOLM", "HOLZ"))
-								addMetaphoneCharacter("S");
+							if (this.AreStringsAt((current + 1), 4, "HEIM", "HOEK", "HOLM", "HOLZ"))
+								this.AddMetaphoneCharacter("S");
 							else
-								addMetaphoneCharacter("X");
+								this.AddMetaphoneCharacter("X");
 							current += 2;
 							break;
 						}
 
 						//italian & armenian
-						if (areStringsAt(current, 3, "SIO", "SIA") || areStringsAt(current, 4, "SIAN"))
+						if (this.AreStringsAt(current, 3, "SIO", "SIA") || this.AreStringsAt(current, 4, "SIAN"))
 						{
 							if (!IsWordSlavoGermanic())
-								AddMetaphoneCharacter("S", "X");
+								this.AddMetaphoneCharacter("S", "X");
 							else
-								addMetaphoneCharacter("S");
+								this.AddMetaphoneCharacter("S");
 							current += 3;
 							break;
 						}
 
 						//german & anglicisations, e.g. 'smith' match 'schmidt', 'snider' match 'schneider'
 						//also, -sz- in slavic language altho in hungarian it is pronounced 's'
-						if (((current == 0)
-								&& areStringsAt((current + 1), 1, "M", "N", "L", "W"))
-							|| areStringsAt((current + 1), 1, "Z"))
+						if (((current == 0) && this.AreStringsAt((current + 1), 1, "M", "N", "L", "W")) || this.AreStringsAt((current + 1), 1, "Z"))
 						{
-							AddMetaphoneCharacter("S", "X");
-							if (areStringsAt((current + 1), 1, "Z"))
+							this.AddMetaphoneCharacter("S", "X");
+							if (this.AreStringsAt((current + 1), 1, "Z"))
 								current += 2;
 							else
 								current += 1;
 							break;
 						}
 
-						if (areStringsAt(current, 2, "SC"))
+						if (this.AreStringsAt(current, 2, "SC"))
 						{
 							//Schlesinger's rule
-							if (m_word[current + 2] == 'H')
+							if (this._word[current + 2] == 'H')
 								//dutch origin, e.g. 'school', 'schooner'
-								if (areStringsAt((current + 3), 2, "OO", "ER", "EN", "UY", "ED", "EM"))
+								if (this.AreStringsAt((current + 3), 2, "OO", "ER", "EN", "UY", "ED", "EM"))
 								{
 									//'schermerhorn', 'schenker'
-									if (areStringsAt((current + 3), 2, "ER", "EN"))
+									if (this.AreStringsAt((current + 3), 2, "ER", "EN"))
 									{
-										AddMetaphoneCharacter("X", "SK");
+										this.AddMetaphoneCharacter("X", "SK");
 									}
 									else
 									{
-										addMetaphoneCharacter("SK");
+										this.AddMetaphoneCharacter("SK");
 									}
 
 									current += 3;
@@ -741,120 +765,120 @@ namespace Alison.Library.Encoders
 								}
 								else
 								{
-									if ((current == 0) && !IsVowel(3) && (m_word[3] != 'W'))
-										AddMetaphoneCharacter("X", "S");
+									if ((current == 0) && !IsVowel(3) && (this._word[3] != 'W'))
+										this.AddMetaphoneCharacter("X", "S");
 									else
-										addMetaphoneCharacter("X");
+										this.AddMetaphoneCharacter("X");
 									current += 3;
 									break;
 								}
 
-							if (areStringsAt((current + 2), 1, "I", "E", "Y"))
+							if (this.AreStringsAt((current + 2), 1, "I", "E", "Y"))
 							{
-								addMetaphoneCharacter("S");
+								this.AddMetaphoneCharacter("S");
 								current += 3;
 								break;
 							}
 							//else
-							addMetaphoneCharacter("SK");
+							this.AddMetaphoneCharacter("SK");
 							current += 3;
 							break;
 						}
 
 						//french e.g. 'resnais', 'artois'
-						if ((current == m_last) && areStringsAt((current - 2), 2, "AI", "OI"))
-							AddMetaphoneCharacter("", "S");
+						if ((current == _last) && this.AreStringsAt((current - 2), 2, "AI", "OI"))
+							this.AddMetaphoneCharacter("", "S");
 						else
-							addMetaphoneCharacter("S");
+							this.AddMetaphoneCharacter("S");
 
-						if (areStringsAt((current + 1), 1, "S", "Z"))
+						if (this.AreStringsAt((current + 1), 1, "S", "Z"))
 							current += 2;
 						else
 							current += 1;
 						break;
 
 					case 'T':
-						if (areStringsAt(current, 4, "TION"))
+						if (this.AreStringsAt(current, 4, "TION"))
 						{
-							addMetaphoneCharacter("X");
+							this.AddMetaphoneCharacter("X");
 							current += 3;
 							break;
 						}
 
-						if (areStringsAt(current, 3, "TIA", "TCH"))
+						if (this.AreStringsAt(current, 3, "TIA", "TCH"))
 						{
-							addMetaphoneCharacter("X");
+							this.AddMetaphoneCharacter("X");
 							current += 3;
 							break;
 						}
 
-						if (areStringsAt(current, 2, "TH") || areStringsAt(current, 3, "TTH"))
+						if (this.AreStringsAt(current, 2, "TH") || this.AreStringsAt(current, 3, "TTH"))
 						{
 							//special case 'thomas', 'thames' or germanic
-							if (areStringsAt((current + 2), 2, "OM", "AM")
-								|| areStringsAt(0, 4, "VAN ", "VON ")
-								|| areStringsAt(0, 3, "SCH"))
+							if (this.AreStringsAt((current + 2), 2, "OM", "AM")
+								|| this.AreStringsAt(0, 4, "VAN ", "VON ")
+								|| this.AreStringsAt(0, 3, "SCH"))
 							{
-								addMetaphoneCharacter("T");
+								this.AddMetaphoneCharacter("T");
 							}
 							else
 							{
-								AddMetaphoneCharacter("0", "T");
+								this.AddMetaphoneCharacter("0", "T");
 							}
 
 							current += 2;
 							break;
 						}
 
-						if (areStringsAt((current + 1), 1, "T", "D"))
+						if (this.AreStringsAt((current + 1), 1, "T", "D"))
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("T");
+						this.AddMetaphoneCharacter("T");
 						break;
 
 					case 'V':
-						if (m_word[current + 1] == 'V')
+						if (this._word[current + 1] == 'V')
 							current += 2;
 						else
 							current += 1;
-						addMetaphoneCharacter("F");
+						this.AddMetaphoneCharacter("F");
 						break;
 
 					case 'W':
 						//can also be in middle of word
-						if (areStringsAt(current, 2, "WR"))
+						if (this.AreStringsAt(current, 2, "WR"))
 						{
-							addMetaphoneCharacter("R");
+							this.AddMetaphoneCharacter("R");
 							current += 2;
 							break;
 						}
 
 						if ((current == 0)
-							&& (IsVowel(current + 1) || areStringsAt(current, 2, "WH")))
+							&& (this.IsVowel(current + 1) || this.AreStringsAt(current, 2, "WH")))
 						{
 							//Wasserman should match Vasserman
 							if (IsVowel(current + 1))
-								AddMetaphoneCharacter("A", "F");
+								this.AddMetaphoneCharacter("A", "F");
 							else
 								//need Uomo to match Womo
-								addMetaphoneCharacter("A");
+								this.AddMetaphoneCharacter("A");
 						}
 
 						//Arnow should match Arnoff
-						if (((current == m_last) && IsVowel(current - 1))
-							|| areStringsAt((current - 1), 5, "EWSKI", "EWSKY", "OWSKI", "OWSKY")
-							|| areStringsAt(0, 3, "SCH"))
+						if (((current == _last) && IsVowel(current - 1))
+							|| this.AreStringsAt((current - 1), 5, "EWSKI", "EWSKY", "OWSKI", "OWSKY")
+							|| this.AreStringsAt(0, 3, "SCH"))
 						{
-							AddMetaphoneCharacter("", "F");
+							this.AddMetaphoneCharacter("", "F");
 							current += 1;
 							break;
 						}
 
 						//polish e.g. 'filipowicz'
-						if (areStringsAt(current, 4, "WICZ", "WITZ"))
+						if (this.AreStringsAt(current, 4, "WICZ", "WITZ"))
 						{
-							AddMetaphoneCharacter("TS", "FX");
+							this.AddMetaphoneCharacter("TS", "FX");
 							current += 4;
 							break;
 						}
@@ -865,12 +889,10 @@ namespace Alison.Library.Encoders
 
 					case 'X':
 						//french e.g. breaux
-						if (!((current == m_last)
-								&& (areStringsAt((current - 3), 3, "IAU", "EAU")
-									|| areStringsAt((current - 2), 2, "AU", "OU"))))
-							addMetaphoneCharacter("KS");
+						if (!((current == _last) && (this.AreStringsAt((current - 3), 3, "IAU", "EAU") || this.AreStringsAt((current - 2), 2, "AU", "OU"))))
+							this.AddMetaphoneCharacter("KS");
 
-						if (areStringsAt((current + 1), 1, "C", "X"))
+						if (this.AreStringsAt((current + 1), 1, "C", "X"))
 							current += 2;
 						else
 							current += 1;
@@ -878,23 +900,23 @@ namespace Alison.Library.Encoders
 
 					case 'Z':
 						//chinese pinyin e.g. 'zhao'
-						if (m_word[current + 1] == 'H')
+						if (this._word[current + 1] == 'H')
 						{
-							addMetaphoneCharacter("J");
+							this.AddMetaphoneCharacter("J");
 							current += 2;
 							break;
 						}
 						else
-							if (areStringsAt((current + 1), 2, "ZO", "ZI", "ZA") || (IsWordSlavoGermanic() && ((current > 0) && m_word[current - 1] != 'T')))
+							if (this.AreStringsAt((current + 1), 2, "ZO", "ZI", "ZA") || (this.IsWordSlavoGermanic() && ((current > 0) && this._word[current - 1] != 'T')))
 						{
-							AddMetaphoneCharacter("S", "TS");
+							this.AddMetaphoneCharacter("S", "TS");
 						}
 						else
 						{
-							addMetaphoneCharacter("S");
+							this.AddMetaphoneCharacter("S");
 						}
 
-						if (m_word[current + 1] == 'Z')
+						if (this._word[current + 1] == 'Z')
 							current += 2;
 						else
 							current += 1;
@@ -907,18 +929,18 @@ namespace Alison.Library.Encoders
 			}
 
 			//Finally, chop off the keys at the proscribed length
-			if (m_primaryKeyLength > KeyLength)
+			if (this._primaryKeyLength > KeyLength)
 			{
-				m_primaryKey.Length = KeyLength;
+				this._primaryKeyBuilder.Length = KeyLength;
 			}
 
-			if (m_alternateKeyLength > KeyLength)
+			if (this._alternateKeyLength > KeyLength)
 			{
-				m_alternateKey.Length = KeyLength;
+				this._alternateKeyBuilder.Length = KeyLength;
 			}
 
-			m_primaryKeyString = m_primaryKey.ToString();
-			m_alternateKeyString = m_alternateKey.ToString();
+			this._primaryKey = this._primaryKeyBuilder.ToString();
+			this._alternateKey = this._alternateKeyBuilder.ToString();
 		}
 
 		/// <summary>
@@ -929,7 +951,7 @@ namespace Alison.Library.Encoders
 		///	</returns>
 		private bool IsWordSlavoGermanic()
 		{
-			if ((m_word.IndexOf("W") != -1) || (m_word.IndexOf("K") != -1) || (m_word.IndexOf("CZ") != -1) || (m_word.IndexOf("WITZ") != -1))
+			if ((this._word.IndexOf("W") != -1) || (this._word.IndexOf("K") != -1) || (this._word.IndexOf("CZ") != -1) || (this._word.IndexOf("WITZ") != -1))
 			{
 				return true;
 			}
@@ -944,10 +966,10 @@ namespace Alison.Library.Encoders
 		/// <returns>True if m_word[pos] is a Roman vowel, otherwise false.</returns>
 		private bool IsVowel(int pos)
 		{
-			if ((pos < 0) || (pos >= m_length))
+			if ((pos < 0) || (pos >= this._length))
 				return false;
 
-			Char it = m_word[pos];
+			Char it = this._word[pos];
 
 			if ((it == 'E') || (it == 'A') || (it == 'I') || (it == 'O') || (it == 'U') || (it == 'Y'))
 				return true;
@@ -960,9 +982,9 @@ namespace Alison.Library.Encoders
 		///		Appends the given metaphone character to the primary and alternate keys.
 		/// </summary>
 		/// <param name="primaryCharacter">Character to append</param>
-		private void addMetaphoneCharacter(String primaryCharacter)
+		private void AddMetaphoneCharacter(string primaryCharacter)
 		{
-			AddMetaphoneCharacter(primaryCharacter, null);
+			this.AddMetaphoneCharacter(primaryCharacter, null);
 		}
 
 		/// <summary>
@@ -975,7 +997,7 @@ namespace Alison.Library.Encoders
 		///		Alternate character to append to alternate key.  
 		///		May be null or a zero-length string, in which case the primary character will be appended to the alternate key instead.
 		///	</param>
-		private void AddMetaphoneCharacter(String primaryCharacter, String alternateCharacter)
+		private void AddMetaphoneCharacter(string primaryCharacter, string alternateCharacter)
 		{
 			//Is the primary character valid?
 			if (primaryCharacter.Length > 0)
@@ -983,8 +1005,8 @@ namespace Alison.Library.Encoders
 				int idx = 0;
 				while (idx < primaryCharacter.Length)
 				{
-					m_primaryKey.Length++;
-					m_primaryKey[m_primaryKeyLength++] = primaryCharacter[idx++];
+					this._primaryKeyBuilder.Length++;
+					this._primaryKeyBuilder[this._primaryKeyLength++] = primaryCharacter[idx++];
 				}
 			}
 
@@ -995,14 +1017,14 @@ namespace Alison.Library.Encoders
 				//append the primary string as long as it wasn't zero length and isn't a space character
 				if (alternateCharacter.Length > 0)
 				{
-					m_hasAlternate = true;
+					this._hasAlternate = true;
 					if (alternateCharacter[0] != ' ')
 					{
 						int idx = 0;
 						while (idx < alternateCharacter.Length)
 						{
-							m_alternateKey.Length++;
-							m_alternateKey[m_alternateKeyLength++] = alternateCharacter[idx++];
+							this._alternateKeyBuilder.Length++;
+							this._alternateKeyBuilder[this._alternateKeyLength++] = alternateCharacter[idx++];
 						}
 					}
 				}
@@ -1014,8 +1036,8 @@ namespace Alison.Library.Encoders
 						int idx = 0;
 						while (idx < primaryCharacter.Length)
 						{
-							m_alternateKey.Length++;
-							m_alternateKey[m_alternateKeyLength++] = primaryCharacter[idx++];
+							this._alternateKeyBuilder.Length++;
+							this._alternateKeyBuilder[this._alternateKeyLength++] = primaryCharacter[idx++];
 						}
 					}
 				}
@@ -1026,8 +1048,8 @@ namespace Alison.Library.Encoders
 				int idx = 0;
 				while (idx < primaryCharacter.Length)
 				{
-					m_alternateKey.Length++;
-					m_alternateKey[m_alternateKeyLength++] = primaryCharacter[idx++];
+					this._alternateKeyBuilder.Length++;
+					this._alternateKeyBuilder[this._alternateKeyLength++] = primaryCharacter[idx++];
 				}
 			}
 		}
@@ -1041,7 +1063,7 @@ namespace Alison.Library.Encoders
 		/// <returns>
 		///		true if any one string in the strings array was found in m_word at the given position and length.
 		///	</returns>
-		private bool areStringsAt(int start, int length, params String[] strings)
+		private bool AreStringsAt(int start, int length, params string[] strings)
 		{
 			if (start < 0)
 			{
@@ -1050,7 +1072,7 @@ namespace Alison.Library.Encoders
 				return false;
 			}
 
-			String target = m_word.Substring(start, length);
+			string target = this._word.Substring(start, length);
 
 			for (int idx = 0; idx < strings.Length; idx++)
 			{

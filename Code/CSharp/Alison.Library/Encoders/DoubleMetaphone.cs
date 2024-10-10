@@ -14,7 +14,7 @@ namespace Alison.Library.Encoders
 		public static int MaxLength	{get;set;} = 4;
 
 		/// <summary>
-		/// Wraps the functionality of the implementation by Adam Nelson (anelson@nullpointer.net).
+		///		Wraps the functionality of the implementation by Adam Nelson (anelson@nullpointer.net).
 		/// </summary>
 		/// <param name="word">The word to encode.</param>
 		/// <returns>The encoded word.</returns>
