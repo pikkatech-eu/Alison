@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Alison.Library.Encoders;
 using Alison.Library.StringMetrics;
+using Alison.Library.Tools;
 
 namespace Alison.Tests
 {
@@ -12,20 +13,9 @@ namespace Alison.Tests
 	{
 		static void Main(string[] args)
 		{
-			// TestRusselIndex();
+			string source = "The Boeing Model 247 is an early American airliner, and one of the first such aircraft to incorporate advances such as all-metal (anodized aluminum) semimonocoque construction, a fully cantilevered wing, and retractable landing gear.[2][3] Other advanced features included control surface trim tabs, an autopilot and de-icing boots for the wings and tailplane.[4] The 247 first flew on February 8, 1933, and entered service later that year.";
 
-			//string word = "jose";
-			//string result = DoubleMetaphone.Encode(word);
-
-			string word1 = "globe";
-			string word2 = "globus";
-
-			double cos = Cosine.Similarity(word1, word2);
-			Console.WriteLine($"{Cosine.NGramLength} -> {cos}");
-
-			Cosine.NGramLength = 3;
-			cos = Cosine.Similarity(word1, word2);
-			Console.WriteLine($"{Cosine.NGramLength} -> {cos}");
+			string[] zokens = NaiveTokenizer.Tokenize(source);
 		}
 
 		private static void TestRusselIndex()

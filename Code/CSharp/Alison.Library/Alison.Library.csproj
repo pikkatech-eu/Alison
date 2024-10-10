@@ -57,6 +57,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Tools\NaiveTokenizer.cs" />
     <Compile Include="Tools\StringExtensions.cs" />
     <Compile Include="StringMetrics\Cosine.cs" />
     <Compile Include="StringMetrics\Levenshtein.cs" />

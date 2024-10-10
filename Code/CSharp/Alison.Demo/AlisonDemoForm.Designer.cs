@@ -63,6 +63,7 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this._txText1 = new System.Windows.Forms.TextBox();
+			this._btSortText1 = new System.Windows.Forms.Button();
 			this._msAlison.SuspendLayout();
 			this._tcAlisonDemo.SuspendLayout();
 			this._tpEncoders.SuspendLayout();
@@ -93,7 +94,7 @@
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnSettings);
 			// 
@@ -380,6 +381,7 @@
 			this._tlpMetrics.Controls.Add(this.label7, 3, 0);
 			this._tlpMetrics.Controls.Add(this.label6, 0, 0);
 			this._tlpMetrics.Controls.Add(this._txText1, 0, 1);
+			this._tlpMetrics.Controls.Add(this._btSortText1, 5, 0);
 			this._tlpMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._tlpMetrics.Location = new System.Drawing.Point(3, 3);
 			this._tlpMetrics.Name = "_tlpMetrics";
@@ -512,6 +514,17 @@
 			this._txText1.TabIndex = 3;
 			this._txText1.TextChanged += new System.EventHandler(this.OnText1Changed);
 			// 
+			// _btSortText1
+			// 
+			this._btSortText1.Location = new System.Drawing.Point(964, 3);
+			this._btSortText1.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+			this._btSortText1.Name = "_btSortText1";
+			this._btSortText1.Size = new System.Drawing.Size(75, 23);
+			this._btSortText1.TabIndex = 11;
+			this._btSortText1.Text = "Sort";
+			this._btSortText1.UseVisualStyleBackColor = true;
+			this._btSortText1.Click += new System.EventHandler(this.OnSort);
+			// 
 			// AlisonDemoForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -577,6 +590,7 @@
 		private System.Windows.Forms.Label _lblLevenshtein;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button _btCopyCosineSimilarity;
+		private System.Windows.Forms.Button _btSortText1;
 	}
 }
 

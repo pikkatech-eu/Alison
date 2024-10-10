@@ -9,16 +9,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
+using SWF = System.Windows.Forms;
+//using System.Data.SqlTypes;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using Alison.Library.Encoders;
 using Alison.Library.StringMetrics;
+using Alison.Library.Tools;
+using System.Linq;
 
 namespace Alison.Demo
 {
 	public partial class AlisonDemoForm : Form
 	{
-		private Dictionary<string, Label> TAGGED_LABELS = new Dictionary<string, Label>()
+		private Dictionary<string, SWF.Label> TAGGED_LABELS = new Dictionary<string, SWF.Label>()
 		{
 		};
 
@@ -85,7 +89,7 @@ namespace Alison.Demo
 				Button button = sender as Button;
 				string tag = button.Tag as string;
 
-				Label label = this.TAGGED_LABELS[tag];
+				SWF.Label label = this.TAGGED_LABELS[tag];
 
 				Clipboard.SetText(label.Text);
 			}
@@ -129,6 +133,27 @@ namespace Alison.Demo
 
 			double cosineSimilarity = Cosine.Similarity(text1, text2);
 			this._lblCosineSimilarity.Text	= cosineSimilarity.ToString();
+		}
+
+		private void OnSort(object sender, EventArgs e)
+		{
+			string rawText = this._txText1.Text;
+			string[] tokens = NaiveTokenizer.Tokenize(rawText);
+			this._txText1.Text = String.Join("\r\n", tokens);
+
+			string probe = this._txText2.Text;
+			List<(string Word, double Similarity)> result = Cosine.SortStringsByDistanceFromToken(tokens.ToList(), probe);
+
+			List<string> output = new List<string>();
+
+			foreach (var item in result)
+			{
+				output.Add($"{item.Word}\t({item.Similarity})");
+			}
+
+			this._txText1.Text = String.Join("\r\n", output);
+
+			this._txText1.ScrollBars = ScrollBars.Vertical;
 		}
 	}
 }
