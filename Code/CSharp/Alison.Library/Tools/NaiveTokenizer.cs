@@ -11,16 +11,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Alison.Library.Tools
 {
 	/// <summary>
-	/// Tool to transform a text into an array of string tokens.
+	/// Tool to transform a text in English into an array of string tokens.
 	/// </summary>
 	public static class NaiveTokenizer
 	{
 		/// <summary>
+		/// List of English stopwords.
 		/// Source: https://gist.github.com/sebleier/554280 .
 		/// </summary>
 		private static readonly string[] ENGLISH_STOPWORDS =
@@ -154,6 +154,13 @@ namespace Alison.Library.Tools
 			"now"
 		};
 
+		/// <summary>
+		/// Tokenizes a string transforming it into an array of tokens.
+		/// The tokenization is "naive" in that sense that it does not support subtlelies rendered by modern NLP tokenizers. 
+		/// Since it only uses Englisg stopwords, it cannot be used for texts in other languages.
+		/// </summary>
+		/// <param name="source">The string to tokenize.</param>
+		/// <returns>An array of string tokens.</returns>
 		public static string[] Tokenize(string source)
 		{
 			StringBuilder sb = new StringBuilder();

@@ -13,6 +13,9 @@ using Alison.Library.Vectorizers;
 
 namespace Alison.Library.StringMeasures
 {
+	/// <summary>
+	/// Contains routines to compute the cosine similarity between strings.
+	/// </summary>
 	public static class Cosine
 	{
 		#region Internal classes
@@ -53,21 +56,26 @@ namespace Alison.Library.StringMeasures
 		}
 		#endregion
 
+		#region Properties
+		/// <summary>
+		/// Case-intensitiveness. If set to true, comparison is carried out with case-sensitive strings, otherwise case is ignored. Defaut: true.
+		/// </summary>
 		public static bool CaseInsensitive	{get;set;} = true;
 
 		/// <summary>
-		/// The length of the NGram used to vectorize the words (default: 2).
+		/// The length of the NGram used to vectorize the strings (default: 2).
 		/// </summary>
 		public static int NGramLength	{get;set;} = 2;
+		#endregion
 
 		/// <summary>
-		/// Calculates Cosine similarity between two words.
+		/// Calculates Cosine similarity between two strings.
 		/// The words are assumed to be preprocessed, i.e. space characters removed and, if necessary, brought to upper- or lowercase.
 		/// The routine itself is case-sensitive.
 		/// </summary>
-		/// <param name="word1">The first word.</param>
-		/// <param name="word2">The second word.</param>
-		/// <returns>The cosine similarity between the words.</returns>
+		/// <param name="word1">The first string.</param>
+		/// <param name="word2">The second string.</param>
+		/// <returns>The cosine similarity between the strings.</returns>
 		public static double Similarity(string word1, string word2)
 		{
 			if (word1 == null && word2 == null)
@@ -112,20 +120,39 @@ namespace Alison.Library.StringMeasures
 		}
 
 		/// <summary>
+		/// Added for convenience. Calculates Cosine similarity between two strings with arbitrary lengths of n-grams.
+		/// </summary>
+		/// <param name="word1">The first string.</param>
+		/// <param name="word2">The second string.</param>
+		/// <param name="nGramLength">The length of n-gram used for vectorization. Default: 2.</param>
+		/// <returns>The cosine similarity between the strings.</returns>
+		public static double Similarity(string word1, string word2, int nGramLength = 2)
+		{
+			int oldNGram = NGramLength;
+			NGramLength = nGramLength;
+
+			double result = Similarity(word1, word2);
+
+			NGramLength = oldNGram;
+
+			return result;
+		}
+
+		/// <summary>
 		/// Finds the element in a string list having the maximum Cosine similarity to the token.
 		/// </summary>
 		/// <param name="items">The list of strings.</param>
 		/// <param name="token">The token string.</param>
-		/// <param name="NGramLength">The length of the NGram used to vectorize the words (default: 2).</param>
+		/// <param name="nGramLength">The length of the NGram used to vectorize the words (default: 2).</param>
 		/// <returns>The most similar element and its index in the list.</returns>
-		public static (string Word, int Index) MostSimilar(List<string> items, string token)
+		public static (string Word, int Index) MostSimilar(List<string> items, string token, int nGramLength = 2)
 		{
 			int index = -1;
 			double similarity = Double.MinValue;
 
 			for (int i = 0; i < items.Count; i++)
 			{
-				double sim = Similarity(items[i], token);
+				double sim = Similarity(items[i], token, nGramLength);
 
 				if (sim > similarity)
 				{
@@ -142,9 +169,9 @@ namespace Alison.Library.StringMeasures
 		/// </summary>
 		/// <param name="items">The list of strings to sort.</param>
 		/// <param name="token">The token to compute distances to.</param>
-		/// <param name="NGramLength">The length of the NGram used to vectorize the words (default: 2).</param>
+		/// <param name="nGramLength">The length of the NGram used to vectorize the words (default: 2).</param>
 		/// <returns>The list sorted in the similarity order.</returns>
-		public static List<(string Word, double Similarity)> SortStringsByDistanceFromToken(List<string> items, string token)
+		public static List<(string Word, double Similarity)> SortStringsByDistanceFromToken(List<string> items, string token, int nGramLength = 2)
 		{
 			List<(string Word, double Similarity)> result = new List<(string Word, double Similarity)>();
 
@@ -153,7 +180,7 @@ namespace Alison.Library.StringMeasures
 				result.Add((item, Similarity(item, token)));
 			}
 
-			SimilarityComparer comparer = new SimilarityComparer(token, NGramLength);
+			SimilarityComparer comparer = new SimilarityComparer(token, nGramLength);
 			result.Sort(comparer);
 
 			return result;

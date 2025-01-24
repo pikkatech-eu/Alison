@@ -10,7 +10,7 @@
 using System.ComponentModel;
 using System.Xml.Linq;
 using Alison.Library.Enumerations;
-using Alison.Library.Tools.Xml;
+using Factotum.Xml;
 
 namespace Alison.Demo
 {

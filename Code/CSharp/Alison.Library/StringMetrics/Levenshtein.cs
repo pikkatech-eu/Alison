@@ -12,10 +12,13 @@ using System.Collections.Generic;
 
 namespace Alison.Library.StringMeasures
 {
+	/// <summary>
+	/// Contains routines to compute the Levenshtein distance between strings.
+	/// </summary>
 	public static class Levenshtein
 	{
 		#region Internal classes
-		public class Comparer: IComparer<string>
+		internal class Comparer: IComparer<string>
 		{
 			private string _token = "";
 
@@ -137,29 +140,18 @@ namespace Alison.Library.StringMeasures
 		#endregion
 
 		#region Private Sorting
+		/// <summary>
+		/// Sorts a list of strings by the Levenshtein distance from a token string.
+		/// </summary>
+		/// <param name="items">The list of strings to sort.</param>
+		/// <param name="token">The token string to comptute distances to.</param>
+		/// <returns>List of strings sorted by Levenshtein distance from the token string.</returns>
 		private static List<string> SortStringsByDistanceFromToken(List<string> items, string token)
 		{
 			Comparer comparer = new Comparer(token);
 			items.Sort(comparer);
 
 			return items;
-		}
-
-		private static List<int> SortByDistanceFromToken(List<string> items, string token)
-		{
-			List<string> temp = new List<string>(items);
-
-			List<int> result = new List<int>();
-
-			List<string> sorted = SortStringsByDistanceFromToken(items, token);
-
-			foreach (string s in sorted)
-			{
-				int index = temp.IndexOf(s);
-				result.Add(index);
-			}
-
-			return result;
 		}
 		#endregion
 	}

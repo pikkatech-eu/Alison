@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>C:\pikkatech.eu\Projects\Alison\Code\CSharp\Binary</BaseOutputPath>
@@ -15,18 +15,22 @@
     <NoWarn>1701;1702;CS0168;CS0414;CS8600;CS8602;CS8603;CS8604;CS8605;CS8618;CS8625;CS8629;CS8714;IDE0028;IDE0090</NoWarn>
   </PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
-		<Nullable>Disable</Nullable>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<ImplicitUsings>disable</ImplicitUsings>
-	</PropertyGroup>
+  <PropertyGroup>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
 	
   <ItemGroup>
     <Compile Remove="Properties\**" />
+    <Compile Remove="Tools\Xml\**" />
     <EmbeddedResource Remove="Properties\**" />
+    <EmbeddedResource Remove="Tools\Xml\**" />
     <None Remove="Properties\**" />
+    <None Remove="Tools\Xml\**" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Compile Remove="Tools\StringExtensions.cs" />
   </ItemGroup>
 
 </Project>
