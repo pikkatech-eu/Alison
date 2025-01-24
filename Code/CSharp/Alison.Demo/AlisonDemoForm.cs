@@ -10,11 +10,10 @@
 using System;
 using System.Collections.Generic;
 using SWF = System.Windows.Forms;
-//using System.Data.SqlTypes;
 using System.Reflection.Emit;
 using System.Windows.Forms;
 using Alison.Library.Encoders;
-using Alison.Library.StringMetrics;
+using Alison.Library.StringMeasures;
 using Alison.Library.Tools;
 using System.Linq;
 
