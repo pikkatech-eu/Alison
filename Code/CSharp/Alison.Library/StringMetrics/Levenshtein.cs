@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Alison.Library.StringMetrics
+namespace Alison.Library.StringMeasures
 {
 	public static class Levenshtein
 	{

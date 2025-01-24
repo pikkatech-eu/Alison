@@ -8,26 +8,30 @@
 ***********************************************************************************/
 
 using System;
-using Alison.Library.StringMetricsInternal;
+using SM=Alison.Library.StringMeasures;
 
 namespace Alison.Library
 {
 	public static class StringMetrics
 	{
 		/// <summary>
-		/// TODO Implement me!
 		/// </summary>
 		/// <param name="source"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
 		public static int LevenshteinDistance(string source, string target)
 		{
-			return Levenshtein.Distance(source, target);
+			return SM.Levenshtein.Distance(source, target);
 		}
 
-		public static double CosineSimilarity(string source, string target, int NGramLength = 2)
+		public static double CosineSimilarity(string source, string target, int nGramLength = 2)
 		{
-			return Cosine.Similarity(source, target, NGramLength);
+			int oldNGramLength = SM.Cosine.NGramLength;
+			SM.Cosine.NGramLength = nGramLength;
+
+			return SM.Cosine.Similarity(source, target);
+
+			SM.Cosine.NGramLength = oldNGramLength;
 		}
 	}
 }

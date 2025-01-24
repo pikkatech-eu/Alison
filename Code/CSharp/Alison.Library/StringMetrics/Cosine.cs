@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alison.Library.Vectorizers;
 
-namespace Alison.Library.StringMetrics
+namespace Alison.Library.StringMeasures
 {
 	public static class Cosine
 	{
