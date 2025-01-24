@@ -8,7 +8,7 @@
 ***********************************************************************************/
 
 using Alison.Library;
-using Alison.Library.StringMetrics;
+using Alison.Library.StringMeasures;
 using NUnit.Framework;
 
 namespace Alison.Tests

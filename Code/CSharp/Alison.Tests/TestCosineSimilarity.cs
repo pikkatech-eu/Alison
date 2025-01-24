@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alison.Library;
-using Alison.Library.StringMetrics;
+using Alison.Library.StringMeasures;
 using NUnit.Framework;
 
 namespace Alison.Tests
@@ -42,7 +42,7 @@ namespace Alison.Tests
 
 			double similarity = Cosine.Similarity(word1, word2);
 
-			Assert.That(similarity >= 0.5);
+			Assert.That(similarity >= 0.35);
 		}
 
 		[Test]

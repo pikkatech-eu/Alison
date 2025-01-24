@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alison.Library.Encoders;
-using Alison.Library.StringMetrics;
+using Alison.Library.StringMeasures;
 using Alison.Library.Tools;
 
 namespace Alison.Tests
