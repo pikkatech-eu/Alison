@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/***********************************************************************************
+* File:         Program.cs                                                         *
+* Contents:     Class Program                                                      *
+* Author:       Stanislav "Bav" Koncebovski (stanislav@pikkatech.eu)               *
+* Date:         2025-01-29 10:27                                                   *
+* Version:      1.0                                                                *
+* Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
+***********************************************************************************/
+
 using Alison.Library.Encoders;
 using Alison.Library.StringMeasures;
 
@@ -19,12 +23,14 @@ namespace Alison.Tests
 
 		private static void TestNeedlemannWunsch()
 		{
-			string word1 = "ATCG";
-			string word2 = "TAGC";
+			string word1 = "Neil";
+			string word2 = "Niall";
 
 			int score = NeedlemanWunsch.SimilarityScore(word1, word2);
 
 			Console.WriteLine($"NW score for {word1} and {word2} = {score}");
+
+			double sim = NeedlemanWunsch.Similarity(word1, word2);
 		}
 
 		private static void TestDaimokDistance()
