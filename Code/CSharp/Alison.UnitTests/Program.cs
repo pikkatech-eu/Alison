@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Alison.Library.Encoders;
 using Alison.Library.StringMeasures;
+
 using Alison.Library.Tools;
 
 namespace Alison.Tests
@@ -12,6 +13,37 @@ namespace Alison.Tests
 	internal class Program
 	{
 		static void Main(string[] args)
+		{
+			TestNeedlemannWunsch();
+		}
+
+		private static void TestNeedlemannWunsch()
+		{
+			string word1 = "ATCG";
+			string word2 = "TAGC";
+
+			int score = NeedlemanWunsch.SimilarityScore(word1, word2);
+
+			Console.WriteLine($"NW score for {word1} and {word2} = {score}");
+		}
+
+		private static void TestDaimokDistance()
+		{
+			string word1 = "Halberstadt";
+			string word2 = "Holubica";
+
+			int d = Daimox.Distance(word1, word2);
+		}
+
+		private static void TestDaimokLevenstheinDistance()
+		{
+			string word1 = "Halberstadt";
+			string word2 = "Holubica";
+
+			int d = Daimox.LevenshteinDistance(word1, word2);
+		}
+
+		private static void TestNaiveTokenizer()
 		{
 			string source = "The Boeing Model 247 is an early American airliner, and one of the first such aircraft to incorporate advances such as all-metal (anodized aluminum) semimonocoque construction, a fully cantilevered wing, and retractable landing gear.[2][3] Other advanced features included control surface trim tabs, an autopilot and de-icing boots for the wings and tailplane.[4] The 247 first flew on February 8, 1933, and entered service later that year.";
 

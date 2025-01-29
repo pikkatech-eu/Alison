@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Alison.Library.DaimoxIntern;
 using Alison.Library.Encoders.DaimoxIntern;
+using Alison.Library.StringMeasures;
 using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
@@ -244,6 +245,63 @@ namespace Alison.Library.Encoders
 			codem = Codem.RemoveDuplicates(codem);
 
 			return codem.ToString();
+		}
+
+		/// <summary>
+		/// Computes the numerical distance between two words using the numerical values of Daimok encoding.
+		/// If A = [a_1, a_2, ..., a_n] is the array of Daimok encoding for word1, and B = [b_1, ..., b_m] the array of Daimok encoding for word2,
+		/// the result is min (|a'_i - b'_j|), where a'_i and b'_j are the numerical values of the strings a_i and b_j.
+		/// </summary>
+		/// <param name="word1">The first word.</param>
+		/// <param name="word2">The second word.</param>
+		/// <returns>The Daimok distance omputed as specified above.</returns>
+		public static int Distance(string word1, string word2)
+		{
+			string[] daimok1 = Daimox.Encode(word1).Split(',');
+			string[] daimok2 = Daimox.Encode(word2).Split(',');
+
+			int[] values1	= daimok1.Select(t => Int32.Parse(t)).ToArray();
+			int[] values2	= daimok2.Select(t => Int32.Parse(t)).ToArray();
+
+			int result = Int32.MaxValue;
+
+			foreach (int i in values1)
+			{
+				foreach (int j in values2)
+				{
+					int d = Math.Abs(i - j);
+
+					if (d < result)
+					{
+						result = d;
+					}
+				}
+			}
+
+			return result;
+		}
+
+		public static int LevenshteinDistance(string word1, string word2)
+		{
+			string[] daimok1 = Daimox.Encode(word1).Split(',');
+			string[] daimok2 = Daimox.Encode(word2).Split(',');
+
+			int result = Int32.MaxValue;
+
+			foreach (string s in daimok1)
+			{
+				foreach (string t in daimok2)
+				{
+					int d = Levenshtein.Distance(s, t);
+
+					if (d < result)
+					{
+						result = d;
+					}
+				}
+			}
+
+			return result;
 		}
 
 		#region Private auxiliary
