@@ -21,6 +21,7 @@ namespace Alison.Library.Encoders
 	/// <summary>
 	/// Contains methods for the computation of Daitch-Mokotoff Soundex.
 	/// Algorithm described, e.g. on https://www.jewishgen.org/InfoFiles/soundex.html .
+	/// The comparison occurs case-insensitive.
 	/// </summary>
 	public static class Daimox
 	{
