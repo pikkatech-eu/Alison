@@ -74,10 +74,12 @@ namespace Alison.Demo
 		{
 			string word = this._txWord.Text;
 
-			this._lblRusselIndex.Text = Russell.Encode(word);
-			this._lblAmericanSoundex.Text = AmericanSoundex.Encode(word);
-			this._lblDaitchMokotoff.Text = Daimox.Encode(word);
-			this._lblDoubleMetaphone.Text = DoubleMetaphone.Encode(word);
+			this._lblRusselIndex.Text		= Russell.Encode(word);
+			this._lblAmericanSoundex.Text	= AmericanSoundex.Encode(word);
+			this._lblDaitchMokotoff.Text	= DaitchMokotoff.Encode(word);
+			this._lblDoubleMetaphone.Text	= DoubleMetaphone.Encode(word);
+			this._lblColognePhonetic.Text	= ColognePhonetics.Encode(word);
+			this._lblFuzzySoundex.Text		= FuzzySoundex.Encode(word);
 		}
 
 		private void OnCopyResults(object sender, EventArgs e)

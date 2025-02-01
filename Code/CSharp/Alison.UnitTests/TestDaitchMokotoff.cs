@@ -60,7 +60,7 @@ namespace Alison.Tests
 			for (int i = 0; i < data.Length; i++)
 			{
 				string word = data[i].Word;
-				string encoding = Daimox.Encode(word);
+				string encoding = DaitchMokotoff.Encode(word);
 
 				Assert.That(encoding == data[i].Daimox);
 			}

@@ -1,6 +1,6 @@
 ﻿/***********************************************************************************
-* File:         Daimox.cs                                                          *
-* Contents:     Class Daimox                                                       *
+* File:         DaitchMokotoff.cs                                                  *
+* Contents:     Class DaitchMokotoff                                               *
 * Author:       Stanislav "Bav" Koncebovski (stanislav@pikkatech.eu)               *
 * Date:         2024-09-24 15:13                                                   *
 * Version:      1.0                                                                *
@@ -23,7 +23,7 @@ namespace Alison.Library.Encoders
 	/// Algorithm described, e.g. on https://www.jewishgen.org/InfoFiles/soundex.html .
 	/// The comparison occurs case-insensitive.
 	/// </summary>
-	public static class Daimox
+	public static class DaitchMokotoff
 	{
 		#region Private static data
 		/// <summary>
@@ -212,7 +212,7 @@ namespace Alison.Library.Encoders
 			}
 
 			// 3. Segmentize the word.
-			string[] chunks = Daimox.Segmentize(work);
+			string[] chunks = DaitchMokotoff.Segmentize(work);
 
 			Codem codem = new Codem();
 
@@ -227,15 +227,15 @@ namespace Alison.Library.Encoders
 
 				DmTripleList triples = MAPPINGS[chunk];
 
-				int[] codes = triples.Select(t => Daimox.GetCode(t, i == 0, Daimox.IsNextVowel(i, chunks))).ToArray();
-				List<string> codeStrings = codes.Select(c => Daimox.GetCodeString(c)).ToList();
+				int[] codes = triples.Select(t => DaitchMokotoff.GetCode(t, i == 0, DaitchMokotoff.IsNextVowel(i, chunks))).ToArray();
+				List<string> codeStrings = codes.Select(c => DaitchMokotoff.GetCodeString(c)).ToList();
 
 				codem ^= codeStrings;
 			}
 
 			codem = codem.Reduce();
 
-			codem = Daimox.Recover(codem);
+			codem = DaitchMokotoff.Recover(codem);
 
 			for (int i = 0; i < codem.Count; i++)
 			{
@@ -264,8 +264,8 @@ namespace Alison.Library.Encoders
 		/// <returns>The Daimok distance omputed as specified above.</returns>
 		public static int Distance(string word1, string word2)
 		{
-			string[] daimok1 = Daimox.Encode(word1).Split(',');
-			string[] daimok2 = Daimox.Encode(word2).Split(',');
+			string[] daimok1 = DaitchMokotoff.Encode(word1).Split(',');
+			string[] daimok2 = DaitchMokotoff.Encode(word2).Split(',');
 
 			int[] values1	= daimok1.Select(t => Int32.Parse(t)).ToArray();
 			int[] values2	= daimok2.Select(t => Int32.Parse(t)).ToArray();
@@ -290,8 +290,8 @@ namespace Alison.Library.Encoders
 
 		public static int LevenshteinDistance(string word1, string word2)
 		{
-			string[] daimok1 = Daimox.Encode(word1).Split(',');
-			string[] daimok2 = Daimox.Encode(word2).Split(',');
+			string[] daimok1 = DaitchMokotoff.Encode(word1).Split(',');
+			string[] daimok2 = DaitchMokotoff.Encode(word2).Split(',');
 
 			int result = Int32.MaxValue;
 
@@ -465,7 +465,7 @@ namespace Alison.Library.Encoders
 
 			foreach (string code in codem)
 			{
-				string recovered = Daimox.Recover(code);
+				string recovered = DaitchMokotoff.Recover(code);
 
 				result.Add(recovered);
 			}

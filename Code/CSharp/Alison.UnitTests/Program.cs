@@ -70,7 +70,7 @@ namespace Alison.Tests
 			string word1 = "Halberstadt";
 			string word2 = "Holubica";
 
-			int d = Daimox.Distance(word1, word2);
+			int d = DaitchMokotoff.Distance(word1, word2);
 		}
 
 		private static void TestDaimokLevenstheinDistance()
@@ -78,7 +78,7 @@ namespace Alison.Tests
 			string word1 = "Halberstadt";
 			string word2 = "Holubica";
 
-			int d = Daimox.LevenshteinDistance(word1, word2);
+			int d = DaitchMokotoff.LevenshteinDistance(word1, word2);
 		}
 
 		private static void TestNaiveTokenizer()
