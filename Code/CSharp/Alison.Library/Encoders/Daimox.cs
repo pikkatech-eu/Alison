@@ -168,6 +168,12 @@ namespace Alison.Library.Encoders
 		};
 		#endregion
 		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="word"></param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentException"></exception>
 		public static string Encode(string word)
 		{
 			if (String.IsNullOrEmpty(word))

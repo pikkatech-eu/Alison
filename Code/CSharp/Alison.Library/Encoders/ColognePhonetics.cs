@@ -8,18 +8,14 @@
 ***********************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
-using System.Threading.Tasks;
 using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
 {
 	/// <summary>
-	/// Inspired by https://www.php.net/manual/de/function.soundex.php#84881 
-	/// and https://abydos.readthedocs.io/en/v0.3.0/_modules/abydos/phonetic.html .
+	/// Inspired by  https://abydos.readthedocs.io/en/v0.3.0/_modules/abydos/phonetic.html .
 	/// A function for retrieving the Kölner Phonetik value of a string.
 	/// 
 	/// As described at http://de.wikipedia.org/wiki/Kölner_Phonetik
@@ -30,90 +26,53 @@ namespace Alison.Library.Encoders
 	/// </summary>
 	public static class ColognePhonetics
 	{
-		//private static readonly Dictionary<string, string> SUBSTITUTIONS = new Dictionary<string, string>
-		//{
-		//	["ä"]	="a",
-  //          ["ö"]	="o",
-  //          ["ü"]	="u",
-  //          ["ß"]	="ss",
-  //          ["ph"]	="f"
-		//};
+		#region Constants
+		private const string VOWELS		= "AEIOUJY";
+		private const string CONSONANTS	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		#endregion
 
-		//private static readonly Dictionary<int, string[]> EXCEPTIONS_LEADING	= new Dictionary<int, string[]>
-		//{
-		//	[4] = new string[]{"ca","ch","ck","cl","co","cq","cu","cx" },
-		//	[8] = new string[]{"dc","ds","dz","tc","ts","tz" }
-		//};
-
-		//private static readonly string[] EXCEPTIONS_FOLLOWING = new string[]{"sc","zc","cx","kx","qx"};
-
-		//private static readonly Dictionary<int, string[]> CODING_TABLE	= new Dictionary<int, string[]>
-		//{
-		//	[0]	= new string[]{"a","e","i","j","o","u","y"},
-		//	[1]	= new string[]{"b","p"},
-		//	[2]	= new string[]{"d","t"},
-		//	[3]	= new string[]{"f","v","w"},
-		//	[4]	= new string[]{"c","g","k","q"},
-		//	[4]	8 new string[]{("x"},
-		//	[5]	= new string[]{"l"},
-		//	[6]	= new string[]{"m","n"},
-		//	[7]	= new string[]{"r"},
-		//	[8]	= new string[]{"c","s","z"},
-		//};
-
-		//public static string Encode(string word)
-		//{
-		//	word	= word.ToLower();
-
-		//	foreach (string letter in SUBSTITUTIONS.Keys)
-		//	{
-		//		word	= word.Replace(letter, SUBSTITUTIONS[letter]);
-		//	}
-
-		//	int length	= word.Length;
-
-		//	List<string> value = new List<string>();
-
-		//	for (int i = 0; i < length; i++)
-		//	{
-		//		if (i == 0 && word[..^1] == "cr")
-		//		{
-		//			value[i] = "4";
-		//		}
-		//	}
-
-		private const string UCVSET = "AEIOUJY";
-		private const string UCSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-
-		private static readonly Dictionary<int, char> NUMTRANS = new Dictionary<int, char>
-		{ 
-			[0]	= 'A',
-			[1]	= 'P',
-			[2]	= 'T',
-			[3]	= 'F',
-			[4]	= 'K',
-			[5]	= 'L',
-			[6]	= 'N',
-			[7]	= 'R',
-			[8]	= 'S',
-		};
-
+		#region Private Auxiliary
+		/// <summary>
+		/// Checks if a character is contained in a set of letters.
+		/// </summary>
+		/// <param name="c">The character to check.</param>
+		/// <param name="letters">The set of letters.</param>
+		/// <returns>True if the character is in the set.</returns>
 		private static bool IsIn(char c, params char[] letters)
 		{
 			return letters.Contains(c);
 		}
 
-		private static bool IsAfter(string word, int pos, params char[] letters)
+		/// <summary>
+		/// Checks if the character after a defined position of a word is contained in a set of letters.
+		/// </summary>
+		/// <param name="word">The word to check.</param>
+		/// <param name="position">The position in the word.</param>
+		/// <param name="letters">The set of letters.</param>
+		/// <returns>True if the character is in the set.</returns>
+		private static bool IsAfter(string word, int position, params char[] letters)
 		{
-			return pos > 0 && letters.Contains(word[pos-1]);
+			return position > 0 && letters.Contains(word[position - 1]);
 		}
 
-		private static bool IsBefore(string word, int pos, params char[] letters)
+		/// <summary>
+		/// Checks if the character before a defined position of a word is contained in a set of letters.
+		/// </summary>
+		/// <param name="word">The word to check.</param>
+		/// <param name="position">The position in the word.</param>
+		/// <param name="letters">The set of letters.</param>
+		/// <returns>True if the character is in the set.</returns>
+		private static bool IsBefore(string word, int position, params char[] letters)
 		{
-			return pos + 1 < word.Length && letters.Contains(word[pos + 1]);
+			return position + 1 < word.Length && letters.Contains(word[position + 1]);
 		}
+		#endregion
 
+		/// <summary>
+		/// Encodes a word using the Kölner Phonetik algorithm.
+		/// </summary>
+		/// <param name="word">The word to encode.</param>
+		/// <returns>The word encoded.</returns>
 		public static string Encode(string word)
 		{
 			string result = "";
@@ -125,17 +84,17 @@ namespace Alison.Library.Encoders
 			word	= word.Replace("Ö", "OE");
 			word	= word.Replace("Ü", "UE");
 
-			string word1 = "";
+			string temp = "";
 
 			foreach (char c in word)
 			{
-				if (UCSET.Contains(c))
+				if (CONSONANTS.Contains(c))
 				{
-					word1 += c;
+					temp += c;
 				}
 			}
 
-			word = word1;
+			word = temp;
 
 			if (String.IsNullOrEmpty(word))
 			{
@@ -146,7 +105,7 @@ namespace Alison.Library.Encoders
 			{
 				char c = word[i];
 
-				if (UCVSET.Contains(c))
+				if (VOWELS.Contains(c))
 				{
 					result += '0';
 				}
