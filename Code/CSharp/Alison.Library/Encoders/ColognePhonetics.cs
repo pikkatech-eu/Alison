@@ -8,9 +8,9 @@
 ***********************************************************************************/
 
 using System;
-using System.Linq;
 using System.Text;
 using Alison.Library.Tools;
+using ET = Alison.Library.Tools.EncoderTools;
 
 namespace Alison.Library.Encoders
 {
@@ -29,43 +29,6 @@ namespace Alison.Library.Encoders
 		#region Constants
 		private const string VOWELS		= "AEIOUJY";
 		private const string CONSONANTS	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		#endregion
-
-		#region Private Auxiliary
-		/// <summary>
-		/// Checks if a character is contained in a set of letters.
-		/// </summary>
-		/// <param name="c">The character to check.</param>
-		/// <param name="letters">The set of letters.</param>
-		/// <returns>True if the character is in the set.</returns>
-		private static bool IsIn(char c, params char[] letters)
-		{
-			return letters.Contains(c);
-		}
-
-		/// <summary>
-		/// Checks if the character after a defined position of a word is contained in a set of letters.
-		/// </summary>
-		/// <param name="word">The word to check.</param>
-		/// <param name="position">The position in the word.</param>
-		/// <param name="letters">The set of letters.</param>
-		/// <returns>True if the character is in the set.</returns>
-		private static bool IsAfter(string word, int position, params char[] letters)
-		{
-			return position > 0 && letters.Contains(word[position - 1]);
-		}
-
-		/// <summary>
-		/// Checks if the character before a defined position of a word is contained in a set of letters.
-		/// </summary>
-		/// <param name="word">The word to check.</param>
-		/// <param name="position">The position in the word.</param>
-		/// <param name="letters">The set of letters.</param>
-		/// <returns>True if the character is in the set.</returns>
-		private static bool IsBefore(string word, int position, params char[] letters)
-		{
-			return position + 1 < word.Length && letters.Contains(word[position + 1]);
-		}
 		#endregion
 
 		/// <summary>
@@ -115,7 +78,7 @@ namespace Alison.Library.Encoders
 				}
 				else if (c == 'P')
 				{
-					if (IsBefore(word, i, 'H'))
+					if (ET.IsBefore(word, i, 'H'))
 					{
 						result += '3';
 					}
@@ -126,7 +89,7 @@ namespace Alison.Library.Encoders
 				}
 				else if (c == 'D' || c == 'T')
 				{
-					if (IsBefore(word, i, 'C', 'S', 'Z'))
+					if (ET.IsBefore(word, i, 'C', 'S', 'Z'))
 					{
 						result += '8';
 					}
@@ -135,23 +98,23 @@ namespace Alison.Library.Encoders
 						result += '2';
 					}
 				}
-				else if (IsIn(c, 'F', 'V', 'W'))
+				else if (ET.IsIn(c, 'F', 'V', 'W'))
 				{
 					result += '3';
 				}
-				else if (IsIn(c, 'G', 'K', 'Q'))
+				else if (ET.IsIn(c, 'G', 'K', 'Q'))
 				{
 					result += '4';
 				}
 				else if (c == 'C')
 				{
-					if (IsAfter(word, i, 'S', 'Z'))
+					if (ET.IsAfter(word, i, 'S', 'Z'))
 					{
 						result += '8';
 					}
 					else if (i == 0)
 					{
-						if (IsBefore(word, i, 'A', 'H', 'K', 'L', 'O', 'Q', 'R', 'U', 'X'))
+						if (ET.IsBefore(word, i, 'A', 'H', 'K', 'L', 'O', 'Q', 'R', 'U', 'X'))
 						{
 							result += '4';
 						}
@@ -160,7 +123,7 @@ namespace Alison.Library.Encoders
 							result += '8';
 						}
 					}
-					else if (IsBefore(word, i, 'A', 'H', 'K', 'O', 'Q', 'U', 'X'))
+					else if (ET.IsBefore(word, i, 'A', 'H', 'K', 'O', 'Q', 'U', 'X'))
 					{
 						result += '4';
 					}
@@ -171,7 +134,7 @@ namespace Alison.Library.Encoders
 				}
 				else if (c == 'X')
 				{
-					if (IsAfter(word, i, 'C', 'K', 'Q'))
+					if (ET.IsAfter(word, i, 'C', 'K', 'Q'))
 					{
 						result += '8';
 					}
@@ -184,7 +147,7 @@ namespace Alison.Library.Encoders
 				{
 					result += '5';
 				}
-				else if (IsIn(c, 'M', 'N'))
+				else if (ET.IsIn(c, 'M', 'N'))
 				{
 					result += '6';
 				}
@@ -192,7 +155,7 @@ namespace Alison.Library.Encoders
 				{
 					result += '7';
 				}
-				else if (IsIn(c, 'S', 'Z'))
+				else if (ET.IsIn(c, 'S', 'Z'))
 				{
 					result += '8';
 				}

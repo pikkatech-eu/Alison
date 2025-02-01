@@ -18,7 +18,25 @@ namespace Alison.Tests
 	{
 		static void Main(string[] args)
 		{
-			TestCologne();
+			string s = "christopher";
+
+			var start = s[2..];	// the first 2 characters
+			var end = s[..^2];	// the last 2 characters
+
+			TestFuzzySoundex();
+		}
+
+		private static void TestFuzzySoundex()
+		{
+			string[] words = {"Christopher", "Niall", "Smith", "Schmidt", "Müller", "Zimmermann" };
+			string[] codes = {"K6931", "N4000", "55300", "55300", "657", "86766"};
+
+			for (int i = 0; i < words.Length; i++)
+			{
+				string code = FuzzySoundex.Encode(words[i]);
+				
+				Console.WriteLine($"{words[i]} => {code}");
+			}
 		}
 
 		private static void TestCologne()
@@ -30,7 +48,6 @@ namespace Alison.Tests
 			{
 				string code = ColognePhonetics.Encode(words[i]);
 
-				
 				Console.WriteLine($"{words[i]} => {code}");
 			}
 		}
