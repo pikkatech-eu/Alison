@@ -18,8 +18,23 @@ namespace Alison.Tests
 	{
 		static void Main(string[] args)
 		{
-			TestNeedlemannWunsch();
+			TestCologne();
 		}
+
+		private static void TestCologne()
+		{
+			string[] words = {"Christopher", "Niall", "Smith", "Schmidt", "Müller", "Zimmermann" };
+			string[] codes = {"478237", "65", "862", "862", "657", "86766"};
+
+			for (int i = 0; i < words.Length; i++)
+			{
+				string code = ColognePhonetics.Encode(words[i]);
+
+				
+				Console.WriteLine($"{words[i]} => {code}");
+			}
+		}
+
 
 		private static void TestNeedlemannWunsch()
 		{

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using Alison.Library.Tools;
 
 namespace Alison.Library.Encoders
 {
@@ -143,15 +144,17 @@ namespace Alison.Library.Encoders
 
 			for (int i = 0; i < word.Length; i++)
 			{
-				if (UCVSET.Contains(word[i]))
+				char c = word[i];
+
+				if (UCVSET.Contains(c))
 				{
 					result += '0';
 				}
-				else if (word[i] == 'B')
+				else if (c == 'B')
 				{
 					result += '1';
 				}
-				else if (word[i] == 'P')
+				else if (c == 'P')
 				{
 					if (IsBefore(word, i, 'H'))
 					{
@@ -162,7 +165,7 @@ namespace Alison.Library.Encoders
 						result += '1';
 					}
 				}
-				else if (word[i] == 'D' || word[i] == 'T')
+				else if (c == 'D' || c == 'T')
 				{
 					if (IsBefore(word, i, 'C', 'S', 'Z'))
 					{
@@ -173,6 +176,79 @@ namespace Alison.Library.Encoders
 						result += '2';
 					}
 				}
+				else if (IsIn(c, 'F', 'V', 'W'))
+				{
+					result += '3';
+				}
+				else if (IsIn(c, 'G', 'K', 'Q'))
+				{
+					result += '4';
+				}
+				else if (c == 'C')
+				{
+					if (IsAfter(word, i, 'S', 'Z'))
+					{
+						result += '8';
+					}
+					else if (i == 0)
+					{
+						if (IsBefore(word, i, 'A', 'H', 'K', 'L', 'O', 'Q', 'R', 'U', 'X'))
+						{
+							result += '4';
+						}
+						else
+						{
+							result += '8';
+						}
+					}
+					else if (IsBefore(word, i, 'A', 'H', 'K', 'O', 'Q', 'U', 'X'))
+					{
+						result += '4';
+					}
+					else
+					{
+						result += '8';
+					}
+				}
+				else if (c == 'X')
+				{
+					if (IsAfter(word, i, 'C', 'K', 'Q'))
+					{
+						result += '8';
+					}
+					else
+					{
+						result += "48";
+					}
+				}
+				else if (c == 'L')
+				{
+					result += '5';
+				}
+				else if (IsIn(c, 'M', 'N'))
+				{
+					result += '6';
+				}
+				else if (c == 'R')
+				{
+					result += '7';
+				}
+				else if (IsIn(c, 'S', 'Z'))
+				{
+					result += '8';
+				}
+
+			}
+			
+			result = result.DeleteConsecutiveRepeats();
+
+			bool startsWithZero = result.StartsWith("0");
+
+			result	= result.Replace("0", "");
+
+			if (startsWithZero)
+			{
+				result = "0" + result;
 			}
 
 			return result;
