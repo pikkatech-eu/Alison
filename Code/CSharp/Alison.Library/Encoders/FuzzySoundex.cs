@@ -9,16 +9,30 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Alison.Library.Tools;
 using ET = Alison.Library.Tools.EncoderTools;
 
 namespace Alison.Library.Encoders
 {
+	/// <summary>
+	/// Fuzzy Soundex algorithm.
+	/// @InProceedings{Holmes:2002,
+	/// Title                    = {Improving precision and recall for Soundex retrieval},
+	/// Author                   = {Holmes, David and McCabe, {M. Catherine}},
+	/// Booktitle                = {Proceedings. International Conference on Information Technology: Coding and Computing},
+	/// Year                     = {2002},
+	/// Pages                    = {22--26},
+	/// Doi                      = {10.1109/ITCC.2002.1000354},
+	/// Url                      = {https://ieeexplore.ieee.org/document/1000354/}
+	/// }
+	/// </summary>
 	public static class FuzzySoundex
 	{
+		#region Static Properties
 		public static int MaxLength	{get;set;}	= 5;
+		#endregion
 
+		#region Private data
 		private static Dictionary<char, char> TRANSLATE = new Dictionary<char, char>
 		{
 			['A'] = '0',
@@ -48,7 +62,9 @@ namespace Alison.Library.Encoders
 			['Y'] = '-',
 			['Z'] = '9'
 		};
+		#endregion
 
+		#region Private Auxiliary
 		private static string Translate(string word)
 		{
 			if (String.IsNullOrEmpty(word))
@@ -65,7 +81,14 @@ namespace Alison.Library.Encoders
 
 			return result;
 		}
+		#endregion
 
+		#region Public features
+		/// <summary>
+		/// Encodes a word according to Fuzzy Soundex algotith.
+		/// </summary>
+		/// <param name="word">The word to encode.</param>
+		/// <returns>The word encoded.</returns>
 		public static string Encode(string word)
 		{
 			word	= word.ToAscii();
@@ -172,5 +195,6 @@ namespace Alison.Library.Encoders
 
 			return result;
 		}
+		#endregion
 	}
 }
