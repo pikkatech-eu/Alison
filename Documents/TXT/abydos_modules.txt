@@ -69,8 +69,7 @@ abydos.distance (https://abydos.readthedocs.io/en/v0.3.0/_modules/abydos/distanc
 - Gotoh score
 - Length similarity
 - Prefix, Suffix, and Identity similarity & distance
-- Modified Language-Independent Product Name Search (MLIPNS) similarity &
-  distance
+- Modified Language-Independent Product Name Search (MLIPNS) similarity &   distance
 - Bag distance
 - Editex distance
 - Eudex distances
