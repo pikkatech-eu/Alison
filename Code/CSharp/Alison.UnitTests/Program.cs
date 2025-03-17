@@ -18,12 +18,10 @@ namespace Alison.Tests
 	{
 		static void Main(string[] args)
 		{
-			string s = "christopher";
+			string source = "Rio de janeiro ciudad del sol";
+			string result = Triplex.Encode(source);
 
-			var start = s[2..];	// the first 2 characters
-			var end = s[..^2];	// the last 2 characters
-
-			TestFuzzySoundex();
+			Console.WriteLine(result);
 		}
 
 		private static void TestFuzzySoundex()
