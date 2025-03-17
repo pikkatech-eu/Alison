@@ -1,0 +1,151 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{xspace}
+\usepackage{dirtree}
+\usepackage{url}
+\usepackage{color}
+\usepackage[toc,page]{appendix}
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+\usepackage[left=2.30cm, right=1.50cm, top=2.00cm, bottom=1.80cm]{geometry}
+\usepackage{tgbonum}
+
+% USAGE DIRTREE
+%==============
+%\dirtree{%
+%	.1 Root.
+%	.2 Level 2 \DTcomment{Level 2 comment}.
+%	.3 Level 3 \DTcomment{Level 3 comment}.
+%}
+
+% USAGE TABULARX
+%================
+%\begin{tabularx}{0.95\textwidth}{|l|X|}
+%	\hline
+%	Header 1	& Header 2		\\
+%	\hline
+%	Line 1 Left	& Line 1 Right 	\\
+%	Line 2 Left	& Line 2 Right 	\\
+%	\hline
+%\end{tabularx}
+
+%USAGE ITEMIZE WITH ITEMSEP
+%==========================
+%\begin{itemize}\itemsep-4pt
+%\item First Item
+%\item Second Item
+%\item ...
+%\item Last Item
+%\end{itemize}
+
+% USAGE APPENDICES
+%=================
+%\appendices
+%\section{Important Equations}
+
+% MATRICES
+%=========
+% matrix		no borders
+% pmatrix		()
+% bmatrix		[]
+% vmatrix		||
+% Vmatrix		|| ||
+% BMatrix		{}
+
+% ALIGNMENT
+% =========
+% \begin{equation}\label{key}
+% 	\begin{aligned}
+% 		a   &= x_{ij} \\
+% 		b_j &= y_j 
+% 	\end{aligned}
+% \end{equation}
+
+% AUTO COUNTER (the prefix here being "Requirement")
+%===================================================
+\newcounter{ReqCounter}
+\newcommand{\req}{\protect\stepcounter{ReqCounter}\textbf{RQ} \textbf{\theReqCounter.}~}
+
+%\input{../../../../Documents/macros}
+
+\newcommand{\pal}{\texttt{palipali}\xspace}
+
+\author{Stanislav Koncebovski}
+\title{Triplex Encodig Algorithm}
+
+\begin{document}
+	\maketitle
+	
+\section{Preface}
+In some applications one needs to encode strings with short strings used as keys. For example, in an application where persons' names are stored, it is often useful to have a very short form for it, like "WSH" for "William Shakespeare" or "TED" for "Thomas Edison". Also toponyms belong to this use case. Using "NYC" for "New York City" or "BRL" for Berlin can be useful as keys for toponyms. This article describes an algorithm for the automatic encoding of arbitrary strings as a key string of 3 characters, the Triplex encoding.
+
+\section{Similar Encodings}
+An encoding using somewhat similar idea is Metaphone\cite{10.5555/349124.349132}. However, using Metaphone in its direct form is not possible, since it provides for substitution of characters such as "D" $->$ "T", "B" $->$ "P", etc. For the goals of Metaphone this way is justified, but not for the key generation.
+	
+\section{Algorithm}
+
+	\subsection{Simple Encoding}
+	Simple encoding is the case when the source string $S$ consists of a single word, without space characters and other separators like '-'. We assume also that the word only consists of the letters of the English alphabet from 'a' to 'z'. if the original word contained umlauts or letters with diacritics, we suppose that those have been converted to their ASCII counterparts, like 'ü' $->$ 'u'.\footnote{In Python, this can be done using the \texttt{unidecode} library, in C\# using extension method \texttt{Factotum.Text.ToAscii()}.}
+	
+	\paragraph{Step 1.} If the length of $S$ is less or equal to 3, the result is the source string itself, to upper case.
+	
+	\paragraph{Step 2.} The length of the source string is greater than 3. In all cases, the first character of the result string is the first character of the source, whether it is a vowel or a consonant: $r_1 = s_1.$
+	
+	\paragraph{Step 3.} Remove the first character in $S$ and define the set of consonants in it, written in original order: $C = \{ c_1, c_2, ..., c_n\}$. Also define the set of vowels: $V = \{ v_1, v_2, ..., v_m\}$
+
+	\paragraph{Step 4.} If $n,$ the length of $C$ is greater or equal to 2, take the first two characters of $C$ and assign them as the second and the third character of the result, ready.
+	
+	\paragraph{Step 5.} If $n=1,$ set the first vowel of $V,$ as the second character of the result, the second consonant of $C$ as the third charater of the result, ready.
+	
+	\subsection{Examples of simple encoding}
+	\paragraph{Short sources\\}
+	Source = "Au" (place in Germany). Result: "AU".\\
+	Source = "Y" (a toponym in Alaska, 62.16129N, 149.8508W). Result: "Y".
+	
+	\paragraph{Regular source\\}
+	Source = "paris". $C= \left['r', 's'\right]. $ \\
+	Result: "PRS".
+	
+	\paragraph{Longer source\\}
+	Source = "jerusalem". $C= \left['r', 's', 'l', 'm'\right]. $ \\
+	Result: "JRS".
+	
+	\paragraph{Consonants are not enough\\}
+	Source = "roma". $C= \left['m'\right], V = \left[ 'o', 'a' \right].$ \\
+	The number of characters in $C$ is not enough to build the result, the second character of the result is the first vowel; the second consonant is shiftef to the end of the resulting code.
+	Result: "ROM".
+	
+	\subsection{Complete encoding}
+	If the source string is a combination of words divided by space characters or strokes ('-'), the algorithm is as follows:
+	\paragraph{Step 1.} Split the source into simple strings: $S = \left[ S_1, S_2, ... , S_N.\right]$
+	If $N=1,$ the case is reduced to somple encoding. If $N > 3,$ remove all components beyond the third one. Now we can assume that $N \le 3.$
+	
+	\paragraph{Step 2.} Find Triplex codes for each $S_i: K_i = \mathrm{TRIPLEX}(S_i).$ If $N=3, $ result is the sequence of ther first characters of $K_i: R='K_1[0], K_2[0], K_3[0]'.$
+	
+	If $N=2,$ we add the second character of the second component: $R='K_1[0], K_2[0], K_2[1]'.$ \\
+	If $N=1,$ the result is the Triplex code of the only component. \\
+	
+	\subsection{Examples of complete encoding}
+	\paragraph{Source with more than 3 components\\}
+	Source = "Bel Air Riviere Seche". Components: "Bel", "Air" "Riviere", "Seche". We remove the 4th component: 
+	Components: "Bel", "Air" "Riviere". The corresponding Triplex codes are: "BEL", "AIR", "RVR". The resulting code for the sours: "BAR".
+	
+	\paragraph{Source with two components\\}
+	Source = "Buenos Aires". Components: "Buenos", "Aires". Triplex codes: "BNS", "ARS". The resulting code would be "BA", we add the second character of the second word: "BAR".
+	
+	\paragraph{Source with one component\\}
+	As already ststed, this case is reduced to the computing of the simple Triplex code.
+	
+\section{Further work}
+Many toponyms and persons' names contain elements that must be eliminated before computing the code. Those are such as nobility particles in persons' names ('de', 'von', etc), articles in toponyms, such as "As Surah as Saghirah", where "as" are Arabic articles; "Pa'in-e Bazar-e Rudbar", where the "-e" stands for a Persian case, etc. These elements should be eliminated before computing the Triplex codes.
+\bibliographystyle{ieeetr}
+\bibliography{triplex}
+
+\end{document}
