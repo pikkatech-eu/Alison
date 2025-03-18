@@ -92,7 +92,7 @@ An encoding using somewhat similar idea is Metaphone\cite{10.5555/349124.349132}
 \section{Algorithm}
 
 	\subsection{Simple Encoding}
-	Simple encoding is the case when the source string $S$ consists of a single word, without space characters and other separators like '-'. We assume also that the word only consists of the letters of the English alphabet from 'a' to 'z'. if the original word contained umlauts or letters with diacritics, we suppose that those have been converted to their ASCII counterparts, like 'ü' $->$ 'u'.\footnote{In Python, this can be done using the \texttt{unidecode} library, in C\# using extension method \texttt{Factotum.Text.ToAscii()}.}
+	Simple encoding is the case when the source string $S$ consists of a single word, without space characters and other separators like '-'. We assume also that the word only consists of the letters of the English alphabet from 'a' to 'z'.\footnote{Concerning digits in the sources: there might be special cases where Arabic or Roman digits play a role, like in the names of monarchs. It would be of advantage to be able to encode "Friedrich Wilhelm IV" as "FV4" to distinguish him from "Friedrich Wilhelm III" encoded as "FV3" rather than to encode both as "FWH" (Hohenzollern).} if the original word contained umlauts or letters with diacritics, we suppose that those have been converted to their ASCII counterparts, like 'ü' $->$ 'u'.\footnote{In Python, this can be done using the \texttt{unidecode} library, in C\# using extension method \texttt{Factotum.Text.ToAscii()}.}
 	
 	\paragraph{Step 1.} If the length of $S$ is less or equal to 3, the result is the source string itself, to upper case.
 	
@@ -143,8 +143,15 @@ An encoding using somewhat similar idea is Metaphone\cite{10.5555/349124.349132}
 	\paragraph{Source with one component\\}
 	As already ststed, this case is reduced to the computing of the simple Triplex code.
 	
+\section{Final remarks}	
+One should bear in mind that the Triplex encoding is only capable to produce up to $26^3 = 178576$ different codes, in reality even less, since codes like "AAA" or "XXX" will not have any real source strings to produce. For a database like a private genealogy or image album this can be enough, but not for collections with hundreds of thousands or millions of different items.
+	
 \section{Further work}
 Many toponyms and persons' names contain elements that must be eliminated before computing the code. Those are such as nobility particles in persons' names ('de', 'von', etc), articles in toponyms, such as "As Surah as Saghirah", where "as" are Arabic articles; "Pa'in-e Bazar-e Rudbar", where the "-e" stands for a Persian case, etc. These elements should be eliminated before computing the Triplex codes.
+
+On the other hand, these details should rather be considered as belongings of an implementation. Whereas in some (or most) applications the articles or/and nobility particles in the source string will be rather elements of noise, in some others they can be significant. 
+
+There can be also some need to generalize the system to produce codes with more than three characters. 
 \bibliographystyle{ieeetr}
 \bibliography{triplex}
 
