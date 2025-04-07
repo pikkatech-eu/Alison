@@ -5,7 +5,7 @@ Name "Alison Demo"
 OutFile "AlisonDemo.exe"
 
 ; The default installation directory
-InstallDir "$DESKTOP\Zeitgeist"
+InstallDir "$DESKTOP\Alison"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel user
