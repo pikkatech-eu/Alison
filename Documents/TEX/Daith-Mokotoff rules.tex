@@ -1,0 +1,185 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{uarial}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{longtable}
+
+\begin{document}
+	\section{Daitch-Mokotoff Soundex Coding}
+	
+	The Daitch-Mokotoff Soundex System was created by Randy Daitch and Gary 
+	Mokotoff of the Jewish Genealogical Society (New York), because they 
+	concluded the system developed by Robert Russell in 1918 in use today by 
+	the U.S. National Archives and Records Administration (NARA) does not apply
+	well to many Slavic and Yiddish surnames.  Daitch-Mokotoff Soundex also 
+	includes refinements that are independent of ethnic considerations.  The 
+	rules for converting surnames into D-M Code numbers are listed below.  They
+	are followed by the coding chart. 
+	
+	\begin{enumerate}
+	\item Names are coded to six digits, each digit representing a sound listed 
+	in the coding chart (below).
+	
+	\item When a name lacks enough coded sounds for six digits, use zeros to 
+	fill to six digits.  GOLDEN which has only four coded sounds [G-L-D-N]
+	is coded as 583600.
+	
+	\item The letters A, E, I, O, U, J, and Y are always coded at the beginning 
+	of a name as in Alpert 087930.  In any other situation, they are 
+	ignored except when two of them form a pair and the pair comes before 
+	a vowel, as in Breuer 791900 but not Freud.
+	
+	\item The letter H is coded at the beginning of a name, as in Haber 579000, 
+	or preceding a vowel, as in Manheim 665600, otherwise it is not coded.
+	
+	\item When adjacent sounds can combine to form a larger sound, they are 
+	given the code number of the larger sound.  Mintz which is not coded 
+	MIN-T-Z but MIN-TZ 664000. 
+	
+	\item When adjacent letters have the same code number, they are coded as one
+	sound, as in TOPF, which is not coded TO-P-F 377000 but TO-PF 370000. 
+	Exceptions to this rule are the letter combinations MN and NM, whose 
+	letters are coded separately, as in Kleinman, which is coded 586660 
+	not 586600. 
+	\item When a surname consists or more than one word, it is coded as if one 
+	word, such as "Ben Aron", which is treated as "Benaron". 
+	
+	\item Several letter and letter combinations pose the problem that they may 
+	sound in one of two ways.  The letter and letter combinations CH, CK, 
+	C, J, and RS are assigned two possible code numbers. 
+	\end{enumerate}
+	
+	\section{The Daitch-Mokotoff Soundex Coding Chart}
+	\begin{longtable}{|l|l|l|l|l|}
+		\hline
+		Letter & Alternatives & At Start & Before vowel & Any other pos \\
+		\hline
+		~&~&~&~&~\\
+		AI & AJ, AY & 0 & 1 & NC \\
+		AU &   & 0 & 7 & NC \\
+		Ą & (Polish a-ogonek) & NC & NC & 6 or NC \\
+		A &   & 0 & NC & NC \\
+		B &   & 7 & 7 & 7 \\
+		CHS &   & 5 & 54 & 54 \\
+		CZ & CS, CSZ, CZS & 4 & 4 & 4 \\
+		DRZ & DRS & 4 & 4 & 4 \\
+		DS & DSH, DSZ & 4 & 4 & 4 \\
+		DZ & DZH, DZS & 4 & 4 & 4 \\
+		D & DT & 3 & 3 & 3 \\
+		EI & EJ, EY & 0 & 1 & NC \\
+		EU &   & 1 & 1 & NC \\
+		Ę & (Polish e-ogonek) & NC & NC & 6 or NC \\
+		E &   & 0 & NC & NC \\
+		FB &   & 7 & 7 & 7 \\
+		F &   & 7 & 7 & 7 \\
+		G &   & 5 & 5 & 5 \\
+		H &   & 5 & 5 & NC \\
+		IA & IE, IO, IU & 1 & NC & NC \\
+		I &   & 0 & NC & NC \\
+		KS &   & 5 & 54 & 54 \\
+		KH &   & 5 & 5 & 5 \\
+		K &   & 5 & 5 & 5 \\
+		L &   & 8 & 8 & 8 \\
+		MN &   &   & 66 & 66 \\
+		M &   & 6 & 6 & 6 \\
+		NM &   &   & 66 & 66 \\
+		N &   & 6 & 6 & 6 \\
+		OI & OJ, OY & 0 & 1 & NC \\
+		O &   & 0 & NC & NC \\
+		P & PF, PH & 7 & 7 & 7 \\
+		Q &   & 5 & 5 & 5 \\
+		R &   & 9 & 9 & 9 \\
+		SCHTSCH & SCHTSH, SCHTCH & 2 & 4 & 4 \\
+		SCH &   & 4 & 4 & 4 \\
+		SHTCH & SHCH, SHTSH & 2 & 4 & 4 \\
+		SHT & SCHT, SCHD & 2 & 43 & 43 \\
+		SH &   & 4 & 4 & 4 \\
+		STCH & STSCH, SC & 2 & 4 & 4 \\
+		STRZ & STRS, STSH & 2 & 4 & 4 \\
+		ST &   & 2 & 43 & 43 \\
+		SZCZ & SZCS & 2 & 4 & 4 \\
+		SZT & SHD, SZD, SD & 2 & 43 & 43 \\
+		SZ &   & 4 & 4 & 4 \\
+		S &   & 4 & 4 & 4 \\
+		TCH & TTCH, TTSCH & 4 & 4 & 4 \\
+		TH &   & 3 & 3 & 3 \\
+		TRZ & TRS & 4 & 4 & 4 \\
+		TSCH & TSH & 4 & 4 & 4 \\
+		TS & TTS, TTSZ, TC & 4 & 4 & 4 \\
+		TZ & TTZ, TZS, TSZ & 4 & 4 & 4 \\
+		Ţ & (Romanian t-cedilla) & 3 or 4 & 3 or 4 & 3 or 4 \\
+		T &   & 3 & 3 & 3 \\
+		UI & UJ, UY & 0 & 1 & NC \\
+		U & UE & 0 & NC & NC \\
+		V &   & 7 & 7 & 7 \\
+		W &   & 7 & 7 & 7 \\
+		X &   & 5 & 54 & 54 \\
+		Y &   & 1 & NC & NC \\
+		ZDZ & ZDZH, ZHDZH & 2 & 4 & 4 \\
+		ZD & ZHD & 2 & 43 & 43 \\
+		ZH & ZS, ZSCH, ZSH & 4 & 4 & 4 \\
+		Z &   & 4 & 4 & 4 \\
+		\hline
+	\end{longtable}
+	
+		 \newpage
+		 
+	\section{Examples of Daitch-Mokotoff Soundex Coding}
+	\paragraph{AUERBACH = 097500\\} 
+	~\\
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		A & UE & R & B & A & CH ~ &\\
+		\hline
+		0 & NC & 9 & 7 & NC & 5 & Pad \\
+		\hline
+		0  & ~ & 9 & 7 & &   5 & 00	\\
+		\hline
+	\end{tabular}
+
+	 
+	\paragraph{OHRBACH = 097500\\} 
+	~\\
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		O & H & R & B & A & CH ~ &\\
+		\hline
+		0 & NC & 9 & 7 & NC & 5 & Pad \\
+		\hline
+		0  & ~ & 9 & 7 & &   5 & 00	\\
+		\hline
+	\end{tabular}
+	
+	\paragraph{LIPSHITZ = 874400\\} 
+	~\\
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		L & I & P & SH & I & TZ ~ &\\
+		\hline
+		8 & NC & 7 & 4 & NC & 4 & Pad \\
+		\hline
+		8  & ~ &7  & 4 & &   4 & 00	\\
+		\hline
+	\end{tabular}
+	
+	\paragraph{LIPPSZYC = 874400\\} 
+	~\\
+	\begin{tabular}{|l|l|l|l|l|l|l|l|}
+		\hline
+		L & I & P & P & SZ & Y & C & ~ \\
+		\hline
+		8 & NC & 7 & NC & 4 & NC & 4 & Pad \\
+		\hline
+		8 &   & 7 &   & 4 & NC & 4 & 00 \\
+		\hline
+	\end{tabular}
+	
+	\paragraph{LEWINSKY = 876450\\}
+	
+	\paragraph{LEVINSKI = 876450\\}
+	
+	\paragraph{SZLAMAWICZ = 486740\\}
+	
+	\paragraph{SHLAMOVITZ = 486740\\}
+	
+\end{document}
