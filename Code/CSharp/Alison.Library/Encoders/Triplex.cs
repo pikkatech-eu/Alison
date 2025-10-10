@@ -10,7 +10,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Alison.Library.Tools;
+using Factotum.Text;
 
 namespace Alison.Library.Encoders
 {

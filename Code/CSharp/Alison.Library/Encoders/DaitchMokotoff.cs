@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using Alison.Library.DaimoxIntern;
 using Alison.Library.Encoders.DaimoxIntern;
 using Alison.Library.StringMeasures;
-using Alison.Library.Tools;
+using Factotum.Text;
 
 namespace Alison.Library.Encoders
 {
@@ -277,29 +277,6 @@ namespace Alison.Library.Encoders
 				foreach (int j in values2)
 				{
 					int d = Math.Abs(i - j);
-
-					if (d < result)
-					{
-						result = d;
-					}
-				}
-			}
-
-			return result;
-		}
-
-		public static int LevenshteinDistance(string word1, string word2)
-		{
-			string[] daimok1 = DaitchMokotoff.Encode(word1).Split(',');
-			string[] daimok2 = DaitchMokotoff.Encode(word2).Split(',');
-
-			int result = Int32.MaxValue;
-
-			foreach (string s in daimok1)
-			{
-				foreach (string t in daimok2)
-				{
-					int d = Levenshtein.Distance(s, t);
 
 					if (d < result)
 					{

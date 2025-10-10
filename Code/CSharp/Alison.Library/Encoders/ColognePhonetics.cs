@@ -9,7 +9,7 @@
 
 using System;
 using System.Text;
-using Alison.Library.Tools;
+using Factotum.Text;
 using ET = Alison.Library.Tools.EncoderTools;
 
 namespace Alison.Library.Encoders

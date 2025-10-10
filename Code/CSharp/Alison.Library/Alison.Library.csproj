@@ -30,7 +30,13 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <Compile Remove="StringExtensions.cs" />
+    <Compile Remove="StringMetrics.cs" />
     <Compile Remove="Tools\StringExtensions.cs" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Factotum\Code\CSharp\Factotum\Factotum.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@
 ***********************************************************************************/
 
 using Alison.Library.Enumerations;
-using Alison.Library.Tools;
+using Factotum.Text;
 
 namespace Alison.Library.Encoders
 {
