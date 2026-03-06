@@ -7,6 +7,7 @@
 * Copyright:    pikkatech.eu (www.pikkatech.eu)                                    *
 ***********************************************************************************/
 
+using System.Linq;
 using NLPUtils;
 
 namespace Factotum.NLPUtils
