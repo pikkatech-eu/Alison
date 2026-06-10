@@ -1,25 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>C:\pikkatech.eu\Projects\Active\Alison\Code\CSharp\Binary</BaseOutputPath>
+    <BaseOutputPath>..\Binary</BaseOutputPath>
+    <Version>1.0.0.2-build.20260610.2</Version>
+    <IsReleaseProject />
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CS0168;CS0414;CS8600;CS8602;CS8603;CS8604;CS8605;CS8618;CS8625;CS8629;CS8714;IDE0028;IDE0090</NoWarn>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;CS0168;CS0414;CS8600;CS8602;CS8603;CS8604;CS8605;CS8618;CS8625;CS8629;CS8714;IDE0028;IDE0090</NoWarn>
   </PropertyGroup>
-
   <PropertyGroup>
-	<ImplicitUsings>disable</ImplicitUsings>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-	
   <ItemGroup>
     <Compile Remove="Properties\**" />
     <Compile Remove="Tools\Xml\**" />
@@ -28,15 +26,15 @@
     <None Remove="Properties\**" />
     <None Remove="Tools\Xml\**" />
   </ItemGroup>
-	
   <ItemGroup>
     <Compile Remove="StringExtensions.cs" />
     <Compile Remove="StringMetrics.cs" />
     <Compile Remove="Tools\StringExtensions.cs" />
   </ItemGroup>
-	
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Factotum\Code\CSharp\Factotum\Factotum.csproj" />
   </ItemGroup>
-
+  <Target Name="AutoIncrementVersion" AfterTargets="Build">
+    <Exec Command="&quot;C:\MyPrograms\Pikkatech\Versja\Versja.exe&quot; &quot;$(MSBuildProjectFullPath)&quot; increment" />
+  </Target>
 </Project>
